@@ -7,7 +7,7 @@ import 'dart:async';
 import 'dart:convert';
 import '../sidebar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../home/HomePage.dart';
 class Goal extends StatefulWidget{
   @override
   _GoalState createState() => _GoalState();
@@ -63,6 +63,7 @@ class _GoalState extends State<Goal> {
           );
         },
       ),
+      floatingActionButton: PlusButton(),
     );
   }
 }

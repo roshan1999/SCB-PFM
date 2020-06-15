@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class ExpenseCategories{
   String label;
-  String iconType;
-  ExpenseCategories({this.label,this.iconType});
+  IconData icon;
+  ExpenseCategories({this.label,this.icon});
 }
 class AddExpenseCategory extends StatefulWidget {
 
@@ -13,17 +13,17 @@ class AddExpenseCategory extends StatefulWidget {
 
 class _AddExpenseCategoryState extends State<AddExpenseCategory> {
   List<ExpenseCategories> categories = [
-    ExpenseCategories(label: 'Bills',iconType: "payment"),
-    ExpenseCategories(label: 'Rent',iconType: 'home'),
-    ExpenseCategories(label: 'Food',iconType: 'fastFood'),
-    ExpenseCategories(label: 'Social Life',iconType: 'local_bar'),
-    ExpenseCategories(label: 'Entertainment',iconType: 'music_note'),
-    ExpenseCategories(label: 'Household',iconType: 'local_grocery_store'),
-    ExpenseCategories(label: 'Pharmacy',iconType: 'healing'),
-    ExpenseCategories(label: 'Transportation',iconType: 'airport_shuttle'),
-    ExpenseCategories(label: 'Personal Development',iconType: 'person'),
-    ExpenseCategories(label: 'Others',iconType: 'devices_others'),
-    ExpenseCategories(label: 'Add',iconType: 'add'),
+    ExpenseCategories(label: 'Bills',icon: Icons.payment),
+    ExpenseCategories(label: 'Rent',icon: Icons.home),
+    ExpenseCategories(label: 'Food',icon: Icons.fastfood),
+    ExpenseCategories(label: 'Social Life',icon: Icons.local_bar),
+    ExpenseCategories(label: 'Entertainment',icon: Icons.music_note),
+    ExpenseCategories(label: 'Household',icon: Icons.local_grocery_store),
+    ExpenseCategories(label: 'Pharmacy',icon: Icons.healing),
+    ExpenseCategories(label: 'Transportation',icon: Icons.airport_shuttle),
+    ExpenseCategories(label: 'Personal Development',icon: Icons.person),
+    ExpenseCategories(label: 'Others',icon: Icons.devices_other),
+    ExpenseCategories(label: 'Add',icon: Icons.add),
   ];
 
   Widget categoryTemplate(category){

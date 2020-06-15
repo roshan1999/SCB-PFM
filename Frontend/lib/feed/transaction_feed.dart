@@ -11,6 +11,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import '../sidebar.dart';
+import '../home/HomePage.dart';
 
 class Transaction extends StatefulWidget {
   @override
@@ -67,6 +68,7 @@ class _TransactionState extends State<Transaction> {
           );
         },
       ),
+     floatingActionButton: PlusButton(), 
     );
   }
 }
