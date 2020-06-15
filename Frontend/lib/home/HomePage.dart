@@ -18,41 +18,7 @@ class HomePage extends StatelessWidget {
         title: Text('Home Page'),
         elevation: 0,
       ),
-      floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.add_event,
-        overlayColor: Colors.blueGrey,
-        overlayOpacity: 0.4,
-        curve: Curves.fastLinearToSlowEaseIn,
-        children: [
-          SpeedDialChild(
-            child:Icon(Icons.attach_money),
-            label: "Add Transaction",
-            backgroundColor: Colors.greenAccent,
-            onTap:(){
-              Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => MyTransPage()));
-            },
-          ),
-          SpeedDialChild(
-            child:Icon(Icons.outlined_flag),
-            label: "Add Goal",
-            backgroundColor: Colors.redAccent,
-            onTap:(){
-              Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => MyGoalPage()));
-            },
-          ),
-          SpeedDialChild(
-            child:Icon(Icons.add_alert),
-            label: "Add Reminder",
-            backgroundColor: Colors.yellow,
-            onTap:(){
-              Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => MyReminderPage()));
-            },
-          )
-        ],
-      ),
+      floatingActionButton: PlusButton(),
       drawer: ActiveSideBar(),
       body: SafeArea(
         child: Column(
@@ -71,6 +37,51 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class PlusButton extends StatelessWidget {
+  const PlusButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SpeedDial(
+      animatedIcon: AnimatedIcons.add_event,
+      overlayColor: Colors.blueGrey,
+      overlayOpacity: 0.4,
+      curve: Curves.fastLinearToSlowEaseIn,
+      children: [
+        SpeedDialChild(
+          child:Icon(Icons.attach_money),
+          label: "Add Transaction",
+          backgroundColor: Colors.greenAccent,
+          onTap:(){
+            Navigator.push(context,
+              new MaterialPageRoute(builder: (context) => MyTransPage()));
+          },
+        ),
+        SpeedDialChild(
+          child:Icon(Icons.outlined_flag),
+          label: "Add Goal",
+          backgroundColor: Colors.redAccent,
+          onTap:(){
+            Navigator.push(context,
+              new MaterialPageRoute(builder: (context) => MyGoalPage()));
+          },
+        ),
+        SpeedDialChild(
+          child:Icon(Icons.add_alert),
+          label: "Add Reminder",
+          backgroundColor: Colors.yellow,
+          onTap:(){
+            Navigator.push(context,
+              new MaterialPageRoute(builder: (context) => MyReminderPage()));
+          },
+        )
+      ],
     );
   }
 }
