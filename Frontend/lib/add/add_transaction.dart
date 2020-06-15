@@ -368,7 +368,7 @@ class _MyTransPageState extends State<MyTransPage> {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>  AddExpenseCategory(),
+        builder: (context) =>  ChooseCategoryPage(),
       ),
     );
     _label.text = result;
