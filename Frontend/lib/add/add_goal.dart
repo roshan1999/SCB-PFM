@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -61,6 +62,7 @@ class _MyGoalPageState extends State<MyGoalPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
         child: test.length <= 0
             ? Form(
@@ -289,6 +291,13 @@ class _MyGoalPageState extends State<MyGoalPage> {
                 .then((response) {
               if (response.statusCode == 200) {
                 print("Success");
+                Fluttertoast.showToast(
+                    msg: "Success",
+                    toastLength: Toast.LENGTH_SHORT,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+                Navigator.pop(context);
               }
               else{
                 print(response.body);

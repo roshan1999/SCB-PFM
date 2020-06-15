@@ -54,9 +54,11 @@ class _GoalState extends State<Goal> {
         itemBuilder: (BuildContext context, int ind) {
           return new Card(
             child: SildeAbleRow(
+                id: data[ind]['id'],
                 amount: data[ind]['amount_total'],
                 date: data[ind]['due_date'].toString(),
-                purpose: data[ind]['description']
+                purpose: data[ind]['description'],
+              nextPage: 1,
             ),
           );
         },

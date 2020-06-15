@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -64,6 +65,7 @@ class _MyReminderPageState extends State<MyReminderPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
         child: test.length <= 0
             ? Form(
@@ -321,6 +323,7 @@ class _MyReminderPageState extends State<MyReminderPage> {
           ),
           onPressed: () {
             debugPrint("Discard Called");
+            Navigator.pop(context);
           },
           textColor: Colors.blueAccent,
           splashColor: Colors.indigoAccent,
@@ -341,8 +344,13 @@ class _MyReminderPageState extends State<MyReminderPage> {
               print("Success");
             }
             });
+            Fluttertoast.showToast(
+                msg: "Success",
+                toastLength: Toast.LENGTH_SHORT,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
             Navigator.of(context).pop();
-            debugPrint("Save called");
           },
           shape: StadiumBorder(),
           padding: EdgeInsets.fromLTRB(40, 15, 40, 15),

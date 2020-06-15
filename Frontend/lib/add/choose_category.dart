@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class ExpenseCategories{
   String label;
-  IconData icon
-  ExpenseCategories({this.label,this.icon});
+  String iconType;
+  ExpenseCategories({this.label,this.iconType});
 }
 class AddExpenseCategory extends StatefulWidget {
 
@@ -13,17 +13,17 @@ class AddExpenseCategory extends StatefulWidget {
 
 class _AddExpenseCategoryState extends State<AddExpenseCategory> {
   List<ExpenseCategories> categories = [
-    ExpenseCategories(label: 'Bills',icon: 'payment'),
-    ExpenseCategories(label: 'Rent',icon: 'home'),
-    ExpenseCategories(label: 'Food',icon: 'fastfood'),
-    ExpenseCategories(label: 'Social Life',icon: 'local_bar'),
-    ExpenseCategories(label: 'Entertainment',icon: 'music_note'),
-    ExpenseCategories(label: 'Household',icon: 'local_grocery_store'),
-    ExpenseCategories(label: 'Pharmacy',icon: 'healing'),
-    ExpenseCategories(label: 'Transportation',icon: 'airport_shuttle'),
-    ExpenseCategories(label: 'Personal Development',icon: 'person'),
-    ExpenseCategories(label: 'Others',icon: 'devices_others'),
-    ExpenseCategories(label: 'Add',icon: 'add'),
+    ExpenseCategories(label: 'Bills',iconType: "payment"),
+    ExpenseCategories(label: 'Rent',iconType: 'home'),
+    ExpenseCategories(label: 'Food',iconType: 'fastFood'),
+    ExpenseCategories(label: 'Social Life',iconType: 'local_bar'),
+    ExpenseCategories(label: 'Entertainment',iconType: 'music_note'),
+    ExpenseCategories(label: 'Household',iconType: 'local_grocery_store'),
+    ExpenseCategories(label: 'Pharmacy',iconType: 'healing'),
+    ExpenseCategories(label: 'Transportation',iconType: 'airport_shuttle'),
+    ExpenseCategories(label: 'Personal Development',iconType: 'person'),
+    ExpenseCategories(label: 'Others',iconType: 'devices_others'),
+    ExpenseCategories(label: 'Add',iconType: 'add'),
   ];
 
   Widget categoryTemplate(category){
@@ -41,8 +41,8 @@ class _AddExpenseCategoryState extends State<AddExpenseCategory> {
         child: Column(
           children: <Widget>[
             SizedBox(height: 20.0,),
-            Icon(category.icon,
-            color: Colors.lightGreen,size: 30.0,),
+//            Icon(category.iconType,
+//            color: Colors.lightGreen,size: 30.0,),
             SizedBox(height:8.0,),
             Text(
               '${category.label}',

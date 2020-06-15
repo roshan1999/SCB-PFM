@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:convert';
 import './choose_category.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MyTransPage extends StatefulWidget {
   MyTransPage({Key key, this.title}) : super(key: key);
@@ -63,6 +64,7 @@ class _MyTransPageState extends State<MyTransPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
         child: test.length <= 0
             ? Form(
@@ -180,7 +182,6 @@ class _MyTransPageState extends State<MyTransPage> {
       child: TextFormField(
         controller: description,
         textAlign: TextAlign.center,
-        autofocus: false,
         decoration: InputDecoration(
             hintText: hintTxt,
             icon: Icon(
@@ -297,6 +298,13 @@ class _MyTransPageState extends State<MyTransPage> {
                 .then((response) {
               if (response.statusCode == 200) {
                 print("Success");
+                Fluttertoast.showToast(
+                    msg: "Success",
+                    toastLength: Toast.LENGTH_SHORT,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+                Navigator.pop(context);
               }
               else{
                 print(response.body);

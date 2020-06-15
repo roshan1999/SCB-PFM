@@ -58,9 +58,12 @@ class _TransactionState extends State<Transaction> {
         itemBuilder: (BuildContext context, int ind) {
           return new Card(
             child: SildeAbleRow(
+                id:data[ind]['id'],
                 amount: data[ind]['amount'],
                 date: data[ind]['date'].toString(),
-                purpose: data[ind]['description']),
+                purpose: data[ind]['description'],
+              nextPage: 0,
+            ),
           );
         },
       ),

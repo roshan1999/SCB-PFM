@@ -55,9 +55,12 @@ class _RemainderState extends State<Remainder> {
         itemBuilder: (BuildContext context, int ind) {
           return new Card(
             child: SildeAbleRow(
+                id: data[ind]['id'],
                 amount: data[ind]['amount'],
                 date: data[ind]['due_date'].toString(),
-                purpose: data[ind]['description']),
+                purpose: data[ind]['description'],
+                nextPage: 2,
+            ),
           );
         },
       ),
