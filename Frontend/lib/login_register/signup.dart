@@ -519,7 +519,7 @@ class HomePage1 extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            new MaterialPageRoute(builder: (context) => AddExpenseCategory()),
+            new MaterialPageRoute(builder: (context) => ChooseCategoryPage()),
           );
         },
       ),

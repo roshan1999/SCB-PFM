@@ -134,14 +134,18 @@ class SildeAbleRow extends StatelessWidget {
 }
 
 class SildeAbleRowTransaction extends StatelessWidget {
+  final int id;
   final int amount;
   final String date;
   final String purpose;
+  int nextPage;
 
   SildeAbleRowTransaction({
+    @required this.id,
     @required this.amount,
     @required this.date,
     @required this.purpose,
+    @required this.nextPage,
   });
   @override
   Widget build(BuildContext context) {
@@ -202,22 +206,26 @@ class SildeAbleRowTransaction extends StatelessWidget {
 }
 
 class SildeAbleRowGoal extends StatelessWidget {
+  final int id;
   final int amount;
   final String date;
   final String purpose;
   final int amountAchieved;
+  int nextPage;
 
   SildeAbleRowGoal({
+    @required this.id,
     @required this.amountAchieved,
     @required this.amount,
     @required this.date,
     @required this.purpose,
+    @required this.nextPage
   });
   @override
   Widget build(BuildContext context) {
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
-      actionExtentRatio: 0.25,
+      actionExtentRatio: 0.20,
       child: Container(
         color: Colors.white,
         child: ListTile(
@@ -247,6 +255,12 @@ class SildeAbleRowGoal extends StatelessWidget {
         ),
       ),
       secondaryActions: <Widget>[
+        IconSlideAction(
+          caption: 'Add amount',
+          color: Colors.green[400],
+          icon: Icons.attach_money,
+          onTap: null,
+        ),
         IconSlideAction(
           caption: 'Edit',
           color: Colors.black45,
