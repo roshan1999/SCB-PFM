@@ -44,7 +44,7 @@ class _MyGoalPageState extends State<MyGoalPage> {
     String uri = Uri.encodeFull(url + "/goal");
 
     var bodyEncoded = json.encode({
-      "due_date": date,
+      "due_date": '24-06-2020',
       "description": description,
       "amount_total": amountTotal,
       "amount_saved": amountSave

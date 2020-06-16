@@ -8,6 +8,7 @@ import 'dart:convert';
 import '../sidebar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../home/HomePage.dart';
+import 'sliderRow.dart';
 class Goal extends StatefulWidget{
   @override
   _GoalState createState() => _GoalState();
@@ -53,12 +54,13 @@ class _GoalState extends State<Goal> {
         itemCount: data == null ? 0 : data.length,
         itemBuilder: (BuildContext context, int ind) {
           return new Card(
-            child: SildeAbleRow(
+            child: SildeAbleRowGoal(
                 id: data[ind]['id'],
                 amount: data[ind]['amount_total'],
+                amountAchieved: data[ind]['amount_saved'],
                 date: data[ind]['due_date'].toString(),
                 purpose: data[ind]['description'],
-              nextPage: 1,
+                nextPage: 1,
             ),
           );
         },
