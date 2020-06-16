@@ -5,3 +5,4 @@ from .Transaction import *
 from .User import *
 from .Category import *
 from .Goal import *
+from .GoalAlert import *
