@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _loadUrl() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      prefs.setString('url', 'http://932102c315f2.ngrok.io');
+      prefs.setString('url', 'http://817662067967.ngrok.io');
     });
   }
 
@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
       'authorization': basicAuth
     };
     var response = await http.get(uri, headers: headers);
-    print(response);
+    print(response.body);
     return response;
   }
 
