@@ -18,6 +18,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import './initialize_categories.dart';
 
 Widget header(String s) {
   return Container(
@@ -459,6 +460,8 @@ class SetPassword extends StatelessWidget {
                           SharedPreferences prefs =
                               await SharedPreferences.getInstance();
                           prefs.setString('token', token);
+                          initialize_categories();
+                          // Also add spinner/loader for the same.
                           Navigator.push(
                               context,
                               new MaterialPageRoute(
