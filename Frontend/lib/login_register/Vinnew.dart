@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _loadUrl() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      prefs.setString('url', 'http://5a0c0657c949.ngrok.io');
+      prefs.setString('url', 'http://4870610a6066.ngrok.io');
     });
   }
 
