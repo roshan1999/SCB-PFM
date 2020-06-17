@@ -14,7 +14,6 @@ def get_alert_goal(current_user,bal):
   amount_complete=0
   amount_achieved=0
   user_goal = User.query.filter_by(public_id=current_user.public_id).first()
-  print(bal)
   result = user_goal.goals.filter(func.DATE(Goal.due_date) > date.today()).order_by(Goal.due_date)
   for u in result:
       amount_achieved += u.__dict__['amount_saved']
