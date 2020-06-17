@@ -246,7 +246,7 @@ class _MyTransPageState extends State<MyTransPage> {
                   textAlign: TextAlign.center,
                   autofocus: false,
                   decoration: InputDecoration(
-                      hintText: "Enter Due Date",
+                      hintText: "Date of Transaction",
                       icon: Icon(
                         Icons.calendar_today,
                         color: Colors.blue,
