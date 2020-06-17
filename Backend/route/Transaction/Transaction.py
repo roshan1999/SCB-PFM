@@ -2,6 +2,7 @@ from myapp import app
 from ..Token import *
 from model import *
 from flask import request,jsonify,make_response
+from datetime import datetime
 
 # Create a Transactino
 @app.route('/transaction', methods=['POST'])
@@ -10,9 +11,14 @@ def add_transaction(current_user):
   amount = request.json['amount']
   date = request.json['date']
   description = request.json['description']
+  print
+  date_form = datetime.strptime(date, "%d-%m-%Y")
   print(date)
   user_public_id = current_user.public_id
-  category = Category.query.filter_by(public_id = user_public_id, label = request.json['label']).first();
+  stri = str(date_form.year) + "-"+str(date_form.month)+"-"+"1"
+  my_date = datetime.strptime(stri, "%Y-%m-%d")
+  category = Category.query.filter_by(public_id = user_public_id, label = request.json['label'], month = my_date).first();
+  print(my_date)
   category.amount = category.amount + int(amount)
 
   new_transaction = Transaction(amount, date, description, category.id, user_public_id)
@@ -60,7 +66,14 @@ def update_transaction(current_user,id):
 @token_required
 def delete_transaction(current_user, id):
   transact = Transaction.query.get(id)
-  category = Category.query.filter_by(public_id = current_user.public_id, label = request.json['label']).first();
+  cat_id = transact.category_id
+  my_date_month = transact.date.month
+  my_date_year = transact.date.year
+  stri = str(my_date_year) + "-"+str(my_date_month)+"-"+"1"
+  my_date = datetime.strptime(stri, "%Y-%m-%d")
+  print(my_date)
+  category = Category.query.filter_by(public_id = current_user.public_id, month = my_date, id = cat_id).first();
+  print(category)
   category.amount = category.amount - transact.amount
   db.session.delete(transact)
   db.session.commit()

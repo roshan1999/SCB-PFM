@@ -112,17 +112,6 @@ class SildeAbleRow extends StatelessWidget {
                 else{
                   Fluttertoast.showToast(msg: "Failed");
                 }
-
-            }
-            else if (nextPage == 1){
-              Tab.index = 1;
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => Tab.MyTabs()));
-            }
-            else if (nextPage == 2){
-              Tab.index = 2;
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => Tab.MyTabs()));
             }
           },
         ),
