@@ -9,6 +9,7 @@ def add_category(current_user):
   label = request.json['label']
   month = request.json['month'] ## Format (01-MM-YYYY)
   cat_type = request.json['cat_type']
+  amount = request.json['amount']
   user_public_id = current_user.public_id
   new_category = Category(label, month, cat_type, user_public_id)
 
