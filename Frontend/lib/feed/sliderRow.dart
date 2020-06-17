@@ -24,7 +24,7 @@ class SildeAbleRow extends StatelessWidget {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String url = pref.getString('url');
     String token = pref.getString('token');
-    String uri = Uri.encodeFull(url + "/transaction/" + deleteId.toString());
+    String uri = Uri.encodeFull(url + "/reminder/" + deleteId.toString());
     print(uri);
     var response = await http.delete(uri, headers: {
       'Accept': '*/*',
@@ -82,15 +82,6 @@ class SildeAbleRow extends StatelessWidget {
               Navigator.push(context,
                   new MaterialPageRoute(builder: (context) => MyTransPage()));
             }
-            else if(nextPage == 1){
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => MyGoalPage()));
-            }
-            else if(nextPage == 2){
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => MyReminderPage()));
-            }
-
           },
         ),
         IconSlideAction(
@@ -98,8 +89,8 @@ class SildeAbleRow extends StatelessWidget {
           color: Colors.red,
           icon: Icons.delete,
           onTap: () async {
-            if (nextPage ==0){
-              Tab.index = 0;
+            if (nextPage ==2){
+              Tab.index = 2;
               deleteId = id.toString();
               print(deleteId);
               var response = await _deleteId();
@@ -112,17 +103,6 @@ class SildeAbleRow extends StatelessWidget {
                 else{
                   Fluttertoast.showToast(msg: "Failed");
                 }
-
-            }
-            else if (nextPage == 1){
-              Tab.index = 1;
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => Tab.MyTabs()));
-            }
-            else if (nextPage == 2){
-              Tab.index = 2;
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => Tab.MyTabs()));
             }
           },
         ),
@@ -212,6 +192,20 @@ class SildeAbleRowGoal extends StatelessWidget {
   final String purpose;
   final int amountAchieved;
   int nextPage;
+  String deleteIdGoal;
+
+   Future <http.Response> _deleteIdGoal () async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String url = pref.getString('url');
+    String token = pref.getString('token');
+    String uri = Uri.encodeFull(url + "/goal/" + deleteIdGoal.toString());
+    print(uri);
+    var response = await http.delete(uri, headers: {
+      'Accept': '*/*',
+      'x-access-token': token
+    });
+    return response;
+  }
 
   SildeAbleRowGoal({
     @required this.id,
@@ -274,7 +268,24 @@ class SildeAbleRowGoal extends StatelessWidget {
           caption: 'Delete',
           color: Colors.red,
           icon: Icons.delete,
-          onTap: null,
+          onTap: () async {
+            print('Delete called');
+            if (nextPage ==1){
+              Tab.index = 1;
+              deleteIdGoal = id.toString();
+              print(deleteIdGoal);
+              var response = await _deleteIdGoal();
+              print(response.body);
+                if(response.statusCode == 200){
+                  Fluttertoast.showToast(msg:"Success");
+                  Navigator.push(context,
+                      new MaterialPageRoute(builder: (context) => Tab.MyTabs()));
+                }
+                else{
+                  Fluttertoast.showToast(msg: "Failed");
+                }
+            }
+          },
         ),
       ],
     );

@@ -47,7 +47,7 @@ def update_category(current_user, id):
   return category_schema.jsonify(category)
 
 # TODO: Get total amount spent in a particular category(in a particular month)
-# TODO : Fetch amount for each transactino in that month from transaction table.
+# TODO : Fetch amount for total transactino in that month from transaction table.
 # @app.route('/category/<label>/<month_year>')
 # @token_required
 # def get_amount_month(current_user,month_year):
