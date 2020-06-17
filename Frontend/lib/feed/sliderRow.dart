@@ -78,9 +78,9 @@ class SildeAbleRow extends StatelessWidget {
           color: Colors.black45,
           icon: Icons.edit,
           onTap: () {
-            if (nextPage ==0){
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => MyTransPage()));
+            if (nextPage ==0)
+            {
+              Navigator.push(context, new MaterialPageRoute(builder: (context) => MyTransPage()));
             }
           },
         ),

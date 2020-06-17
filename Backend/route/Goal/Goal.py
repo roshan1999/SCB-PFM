@@ -29,6 +29,15 @@ def add_goal(current_user):
   db.session.commit()
   return goal_schema.jsonify(new_goal)
 
+@app.route('/goal', methods = ['PUT'])
+@token_required
+def amt_goal (current_user):
+    id = request.json['id']
+    amt = request.json['amount']
+    goal_fetch = Goal.query.get(id)
+    goal_fetch.amount_saved+=amt
+    db.session.commit()
+    return goal_schema.jsonify(goal_fetch)
 
 @app.route('/goal/<id>', methods=['DELETE'])
 @token_required
