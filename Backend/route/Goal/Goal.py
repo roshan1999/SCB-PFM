@@ -27,5 +27,13 @@ def add_goal(current_user):
   print(amount_total)
   db.session.add(new_goal)
   db.session.commit()
-
   return goal_schema.jsonify(new_goal)
+
+
+@app.route('/goal/<id>', methods=['DELETE'])
+@token_required
+def delete_goal(current_user, id):
+  goal_to_delete = Goal.query.get(id)
+  db.session.delete(goal_to_delete)
+  db.session.commit()
+  return goal_schema.jsonify(goal_to_delete)

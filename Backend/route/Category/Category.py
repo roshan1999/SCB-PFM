@@ -9,6 +9,7 @@ def add_category(current_user):
   label = request.json['label']
   month = request.json['month'] ## Format (01-MM-YYYY)
   cat_type = request.json['cat_type']
+  amount = request.json['amount']
   user_public_id = current_user.public_id
   new_category = Category(label, month, cat_type, user_public_id)
 
@@ -47,7 +48,7 @@ def update_category(current_user, id):
   return category_schema.jsonify(category)
 
 # TODO: Get total amount spent in a particular category(in a particular month)
-# TODO : Fetch amount for each transactino in that month from transaction table.
+# TODO : Fetch amount for total transactino in that month from transaction table.
 # @app.route('/category/<label>/<month_year>')
 # @token_required
 # def get_amount_month(current_user,month_year):
