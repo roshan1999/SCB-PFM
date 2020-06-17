@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
       'authorization': basicAuth
     };
     var response = await http.get(uri, headers: headers);
-    print(response);
+    print(response.body);
     return response;
   }
 

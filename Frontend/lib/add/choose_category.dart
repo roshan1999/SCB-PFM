@@ -1,28 +1,47 @@
 
 import 'package:flutter/material.dart';
 
-class categoryTemplate extends StatelessWidget {
+// ignore: must_be_immutable, camel_case_types
+class categoryTemplate extends StatefulWidget {
+
 
   String label;
   IconData icon;
   categoryTemplate({this.label,this.icon});
 
   @override
+  _categoryTemplateState createState() => _categoryTemplateState();
+}
+
+class _categoryTemplateState extends State<categoryTemplate> {
+  @override
+  void initState() {
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return InkWell(
         onTap: (){
-          if (label == "Add") {
-            createCategoryDialog(context).then((value){
-              // TO DO -- Add new category to user's category database table.
-              categories.removeLast(); // To show new category before the add category
-              categories.removeLast();
-              categories.add(categoryTemplate(icon: Icons.device_unknown,label: value));
-              categories.add(add_category); // To show others and add category option at the end of the grid
-              categories.add(others_category);
+          if (widget.label == "Add") {
+            showDialog(context: context, builder:(context)=>createCategoryDialog(context)).then((value) {
+              if (value == null || value.length == 0 || value == "Discard") {
+                print(value);
+              }
+              else {
+                setState(() {
+                  print("called");
+                  // TO DO -- Add new category to user's category database table.
+                  categories.removeLast(); // To show new category before the add category
+                  categories.removeLast();
+                  categories.add(categoryTemplate(icon: Icons.device_unknown, label: value));
+                  categories.add(add_category); // To show others and add category option at the end of the grid
+                  categories.add(others_category);
+                });
+              }
             });
           }
           else {
-            Navigator.pop(context,label);
+            Navigator.pop(context,widget.label);
           }
         },
         child: Card(
@@ -30,11 +49,11 @@ class categoryTemplate extends StatelessWidget {
         child: Column(
           children: <Widget>[
             SizedBox(height: 20.0,),
-            Icon(icon,
+            Icon(widget.icon,
             color: Colors.lightGreen,size: 30.0,),
             SizedBox(height:8.0,),
             Text(
-              label,
+              widget.label,
               style: TextStyle(
                 fontSize: 14.0,
               ),
@@ -42,9 +61,11 @@ class categoryTemplate extends StatelessWidget {
           ],
         ),
     ),
-      
+
     );
   }
+
+
 }
 List<categoryTemplate> categories = [
     categoryTemplate(label: 'Bills',icon: Icons.payment),
@@ -60,20 +81,29 @@ List<categoryTemplate> categories = [
     add_category
     
   ];
+// ignore: non_constant_identifier_names
 categoryTemplate others_category = categoryTemplate(label: 'Others',icon: Icons.devices_other);
+// ignore: non_constant_identifier_names
 categoryTemplate add_category = categoryTemplate(label: 'Add',icon: Icons.add);
 
 
+// ignore: non_constant_identifier_names
 TextEditingController new_category = TextEditingController();
 
-Future <String> createCategoryDialog(BuildContext context){
-    return showDialog(context: context, builder: (context){
+class pageCall extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+Widget createCategoryDialog(BuildContext context){
+//    return showDialog(context: context, builder: (context){
       return AlertDialog(
         title: Text('Add New Category'),
         content: TextField(
           decoration: (InputDecoration(
             hintText: 'Enter name of category',
-
           )),
           controller: new_category,
         ),
@@ -81,14 +111,21 @@ Future <String> createCategoryDialog(BuildContext context){
           MaterialButton(
             elevation: 5.0,
             child: Text('Add Category'),
-            onPressed: (){
-              Navigator.pop(context,new_category.text.toString());
-            },
-          )
+            onPressed: () {
+              Navigator.pop(context, new_category.text.toString());
+            }
+          ),
+          MaterialButton(
+              elevation: 5.0,
+              child: Text('Cancel'),
+              onPressed: (){
+                Navigator.pop(context,"Discard");
+              }
+          ),
         ],
       );
-    },
-    );
+//    },
+//    );
   }
 
 class ChooseCategoryPage extends StatelessWidget {

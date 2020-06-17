@@ -28,7 +28,7 @@ def add_transaction(current_user):
 @token_required
 def get_transactions(current_user):
   user = User.query.filter_by(public_id = current_user.public_id).first()
-  result = user.transactions.all()
+  result = user.transactions.order_by(Transaction.date.desc())
   return transactions_schema.jsonify(result)
 
 

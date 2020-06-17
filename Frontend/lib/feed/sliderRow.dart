@@ -82,15 +82,6 @@ class SildeAbleRow extends StatelessWidget {
               Navigator.push(context,
                   new MaterialPageRoute(builder: (context) => MyTransPage()));
             }
-            else if(nextPage == 1){
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => MyGoalPage()));
-            }
-            else if(nextPage == 2){
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => MyReminderPage()));
-            }
-
           },
         ),
         IconSlideAction(
