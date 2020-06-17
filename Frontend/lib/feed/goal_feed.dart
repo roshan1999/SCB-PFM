@@ -36,7 +36,7 @@ class _GoalState extends State<Goal> {
       data = json.decode(response.body);
       return (response.body);
     });
-    print(response.body);
+    //print(response.body);
     return "Success";
   }
 
