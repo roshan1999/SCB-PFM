@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String url,token;
-Future<http.Response> addCategory(String amount, String label, String month, bool cat_type) async {
+Future<http.Response> addCategory(String amount, String label, String month, bool catType) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     url = prefs.getString('url');
     token = prefs.getString('token');
@@ -13,7 +12,7 @@ Future<http.Response> addCategory(String amount, String label, String month, boo
 
     var bodyEncoded = json.encode({
       "month": month,
-      "cat_type": cat_type,
+      "cat_type": catType,
       "amount": amount,
       "label": label
     });
@@ -26,6 +25,7 @@ Future<http.Response> addCategory(String amount, String label, String month, boo
     return (response);
   }
 
+ // ignore: non_constant_identifier_names
  void initialize_categories(){
    addCategory('0','Salary','01-06-2020',false);
    addCategory('0','Rental','01-06-2020', false);

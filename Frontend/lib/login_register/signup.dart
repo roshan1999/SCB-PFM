@@ -18,7 +18,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import './initialize_categories.dart';
 
 Widget header(String s) {
   return Container(

@@ -153,6 +153,7 @@ class SildeAbleRow extends StatelessWidget {
 }
 
 
+// ignore: must_be_immutable
 class SildeAbleRowGoal extends StatelessWidget {
   final int id;
   final int amount;

@@ -1,5 +1,4 @@
 
-import 'package:final_project/login_register/initialize_categories.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable, camel_case_types
@@ -8,13 +7,16 @@ class categoryTemplate extends StatefulWidget {
 
   String label;
   IconData icon;
+  // ignore: non_constant_identifier_names
   Color card_color;
+  // ignore: non_constant_identifier_names
   categoryTemplate({this.label,this.icon,this.card_color});
 
   @override
   _categoryTemplateState createState() => _categoryTemplateState();
 }
 
+// ignore: camel_case_types
 class _categoryTemplateState extends State<categoryTemplate> {
   @override
   void initState() {
@@ -89,6 +91,7 @@ categoryTemplate add_category = categoryTemplate(label: 'Add',icon: Icons.add, c
 // ignore: non_constant_identifier_names
 TextEditingController new_category = TextEditingController();
 
+// ignore: camel_case_types
 class pageCall extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
