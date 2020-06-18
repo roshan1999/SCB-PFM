@@ -1,10 +1,14 @@
+
 import 'dart:io';
 
+import 'package:final_project/login_register/Vinnew.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './DashBoard.dart';
 import './Monthly_Expenses.dart';
 import '../sidebar.dart';
+
 //import './graphData.dart' as Graph;
 import './LineGraph.dart';
 import 'package:final_project/add/add_transaction.dart';
@@ -15,20 +19,48 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+
 class HomePage extends StatelessWidget {
   var res;
   String str;
+
+import 'SplashScreen.dart';
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-//    final height = MediaQuery.of(context).size.height;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
         elevation: 0,
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.power),
+          onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs?.clear();
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MyApp()),
+                  ModalRoute.withName("/Home")
+              );
+          },)
+        ],
       ),
       floatingActionButton: PlusButton(),
       drawer: ActiveSideBar(),
-      body: SafeArea(
+
+      body:
+      SafeArea(
         child: Column(
           children: <Widget>[
             DashBoard(),
@@ -68,6 +100,7 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
 }
 
 class PlusButton extends StatelessWidget {
