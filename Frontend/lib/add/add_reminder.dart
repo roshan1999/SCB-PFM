@@ -378,5 +378,3 @@ class _MyReminderPageState extends State<MyReminderPage> {
   }
 
 }
-
-
