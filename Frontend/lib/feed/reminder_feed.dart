@@ -16,9 +16,10 @@ class Remainder extends StatefulWidget {
 }
 
 class _RemainderState extends State<Remainder> {
-  List data;
+  List data = [];
   String url;
   String token;
+  var isLoading = true;
 
   Future<String> getData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -38,6 +39,7 @@ class _RemainderState extends State<Remainder> {
       return (response.body);
     });
     print(response.body);
+    isLoading = false;
     return "Success";
   }
 
@@ -51,20 +53,25 @@ class _RemainderState extends State<Remainder> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: ActiveSideBar(),
-      body: new ListView.builder(
+      body: !isLoading
+          ? RefreshIndicator(
+            child: new ListView.builder(
         itemCount: data == null ? 0 : data.length,
         itemBuilder: (BuildContext context, int ind) {
-          return new Card(
-            child: SildeAbleRow(
-                id: data[ind]['id'],
-                amount: data[ind]['amount'],
-                date: data[ind]['due_date'].toString(),
-                purpose: data[ind]['description'],
-                nextPage: 2,
-            ),
-          );
+            return new Card(
+              child: SildeAbleRow(
+                  id: data[ind]['id'],
+                  amount: data[ind]['amount'],
+                  date: data[ind]['due_date'].toString(),
+                  purpose: data[ind]['description'],
+                  nextPage: 2,
+              ),
+            );
         },
       ),
+        onRefresh: getData,
+          )
+      : Center(child: CircularProgressIndicator()),
       floatingActionButton: PlusButton(),
     );
   }

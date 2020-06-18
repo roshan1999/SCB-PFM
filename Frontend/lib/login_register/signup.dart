@@ -460,7 +460,7 @@ class SetPassword extends StatelessWidget {
                           SharedPreferences prefs =
                               await SharedPreferences.getInstance();
                           prefs.setString('token', token);
-                          initialize_categories();
+//                          initialize_categories();
                           // Also add spinner/loader for the same.
                           Navigator.push(
                               context,

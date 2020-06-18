@@ -22,7 +22,7 @@ Future<http.Response> addCategory(String amount, String label, String month, boo
       'Accept': 'application/json',
       'x-access-token': token
     };
-    var response = await http.post(uri, headers: headers, body: bodyEncoded);
+    var response = await http.patch(uri, headers: headers, body: bodyEncoded);
     return (response);
   }
 

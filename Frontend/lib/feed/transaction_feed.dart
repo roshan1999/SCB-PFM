@@ -19,9 +19,10 @@ class Transaction extends StatefulWidget {
 }
 
 class _TransactionState extends State<Transaction> {
-  List data;
+  List data = [];
   String url;
   String token;
+  var isLoading = true;
 
   Future<String> getData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -41,6 +42,7 @@ class _TransactionState extends State<Transaction> {
       return (response.body);
     });
     print(response.body);
+    isLoading = false;
     return "Success";
   }
 
@@ -54,20 +56,27 @@ class _TransactionState extends State<Transaction> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: ActiveSideBar(),
-      body: new ListView.builder(
-        itemCount: data == null ? 0 : data.length,
-        itemBuilder: (BuildContext context, int ind) {
-          return new Card(
-            child: SildeAbleRow(
-                id:data[ind]['id'],
-                amount: data[ind]['amount'],
-                date: data[ind]['date'].toString(),
-                purpose: data[ind]['description'],
-              nextPage: 0,
-            ),
-          );
-        },
-      ),
+      body: !isLoading
+          ?
+      RefreshIndicator(
+        child: new ListView.builder(
+          itemCount: data == null ? 0 : data.length,
+          itemBuilder: (BuildContext context, int ind) {
+            return new Card(
+              child: SildeAbleRow(
+                  id:data[ind]['id'],
+                  amount: data[ind]['amount'],
+                  date: data[ind]['date'].toString(),
+                  purpose: data[ind]['description'],
+                  label: data[ind]['label'],
+                nextPage: 0,
+              ),
+            );
+          },
+        ),
+        onRefresh: getData,
+      )
+      : Center(child: CircularProgressIndicator()),
      floatingActionButton: PlusButton(), 
     );
   }

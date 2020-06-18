@@ -9,9 +9,14 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyGoalPage extends StatefulWidget {
-  MyGoalPage({Key key, this.title}) : super(key: key);
   final String title;
-
+  final String dateText;
+  final int amountText;
+  final int amountSaveText;
+  final String descriptionText;
+  final String enabled;
+  final String id;
+  MyGoalPage({Key key, this.title, this.id, this.dateText, this.amountText, this.amountSaveText, this.descriptionText, this.enabled}):super(key:key);
   @override
   _MyGoalPageState createState() {
     return _MyGoalPageState();
@@ -19,6 +24,7 @@ class MyGoalPage extends StatefulWidget {
 }
 
 class _MyGoalPageState extends State<MyGoalPage> {
+  _MyGoalPageState();
   String title = "Goal";
   final _formKey = GlobalKey<FormState>();
   DateTime date;
@@ -28,19 +34,42 @@ class _MyGoalPageState extends State<MyGoalPage> {
   RegExp rgxDouble = new RegExp(r'^[0-9]+(\.[0-9]+)?$');
   String currency = 'R', finDate = "";
 
-  TextEditingController _date = new TextEditingController();
-  TextEditingController _amountTotal = new TextEditingController();
-  TextEditingController _amountSaved = new TextEditingController();
-  TextEditingController _description = new TextEditingController();
+  TextEditingController _date;
+  TextEditingController _amountTotal;
+  TextEditingController _amountSaved;
+  TextEditingController _description;
+
+  // ignore: non_constant_identifier_names
 
   List<String> currDrop = ['R', 'Y', 'U', 'E'];
   List<Widget> test = [];
   String url,token;
+
+
+  @override
+  void initState() {
+    _description = TextEditingController();
+    _date = TextEditingController();
+    _amountSaved = TextEditingController();
+    _amountTotal = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _description.text = widget.descriptionText;
+    _date.text = widget.dateText;
+    _amountTotal.text = widget.amountText==null?"":widget.amountText.toString();
+    _amountSaved.text = widget.amountSaveText==null?"":widget.amountSaveText.toString();
+    super.didChangeDependencies();
+  }
+
   Future<http.Response> addGoal(
       String amountTotal, String amountSave,String date, String description) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     url = prefs.getString('url');
     token = prefs.getString('token');
+
     String uri = Uri.encodeFull(url + "/goal");
 
     var bodyEncoded = json.encode({
@@ -54,7 +83,23 @@ class _MyGoalPageState extends State<MyGoalPage> {
       'Accept': 'application/json',
       'x-access-token': token
     };
-    var response = await http.post(uri, headers: headers, body: bodyEncoded);
+    var response;
+    if(widget.enabled=="true"){
+      print("Patch Update");
+      uri = Uri.encodeFull(url + "/goal");
+      bodyEncoded = json.encode({
+        "id":widget.id,
+        "due_date": date,
+        "description": description,
+        "amount_total": amountTotal,
+        "amount_saved": amountSave
+      });
+      response = await http.patch(uri,headers:headers, body:bodyEncoded);
+    }
+    else{
+      response = await http.post(uri, headers: headers, body: bodyEncoded);
+    }
+    print(response.body);
     return (response);
   }
 
@@ -80,10 +125,12 @@ class _MyGoalPageState extends State<MyGoalPage> {
     );
   }
 
+
   List<Widget> _createChildren() {
+//    print(dateText+amountText+amountSaveText+descriptionText);
     test = <Widget>[
       SizedBox(height: 40),
-      buildHeader(title),
+      buildHeader("Goal"),
       SizedBox(height: 30),
       buildDropList("Enter Amount", currDrop, currency, _amountTotal),
       buildForm(Icons.note_add, "Enter Description"),

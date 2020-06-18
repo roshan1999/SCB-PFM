@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:final_project/add/add_goal.dart';
 import 'package:final_project/add/add_reminder.dart';
 
@@ -17,14 +19,15 @@ class SildeAbleRow extends StatelessWidget {
   final int amount;
   final String date;
   final String purpose;
+  final String label;
   int nextPage;
   String deleteId;
 
-  Future <http.Response> _deleteId (String route) async {
+  Future <http.Response> _deleteId(String route) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String url = pref.getString('url');
     String token = pref.getString('token');
-    String uri = Uri.encodeFull(url + "/"+route+"/" + deleteId.toString());
+    String uri = Uri.encodeFull(url + "/" + route + "/" + deleteId.toString());
     print(uri);
     var response = await http.delete(uri, headers: {
       'Accept': '*/*',
@@ -32,13 +35,16 @@ class SildeAbleRow extends StatelessWidget {
     });
     return response;
   }
+
   SildeAbleRow({
     @required this.id,
     @required this.amount,
     @required this.date,
     @required this.purpose,
     @required this.nextPage,
+    this.label,
   });
+
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -78,9 +84,28 @@ class SildeAbleRow extends StatelessWidget {
           color: Colors.black45,
           icon: Icons.edit,
           onTap: () {
-            if (nextPage ==0)
-            {
-              Navigator.push(context, new MaterialPageRoute(builder: (context) => MyTransPage()));
+            if (nextPage == 2) {
+              print(date+amount.toString()+purpose);
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => MyReminderPage(
+                    id:id.toString(),
+                    dateText: date,
+                    amountText: amount,
+                    descriptionText: purpose,
+                    enabled:"true",
+                  )));
+            }
+            else if (nextPage == 0) {
+              print(date+amount.toString()+purpose);
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => MyTransPage(
+                    id:id.toString(),
+                    dateText: date,
+                    amountText: amount,
+                    descriptionText: purpose,
+                    labelText: label,
+                    enabled:"true",
+                  )));
             }
           },
         ),
@@ -89,41 +114,40 @@ class SildeAbleRow extends StatelessWidget {
           color: Colors.red,
           icon: Icons.delete,
           onTap: () async {
-            if (nextPage ==0){
+            if (nextPage == 0) {
               Tab.index = 0;
               deleteId = id.toString();
               print(deleteId);
               var response = await _deleteId("transaction");
               print(response.body);
-              if(response.statusCode == 200){
-                Fluttertoast.showToast(msg:"Success");
+              if (response.statusCode == 200) {
+                Fluttertoast.showToast(msg: "Success");
                 Navigator.push(context,
                     new MaterialPageRoute(builder: (context) => Tab.MyTabs()));
               }
-              else{
+              else {
                 Fluttertoast.showToast(msg: "Failed");
               }
             }
-            if (nextPage ==2){
+            if (nextPage == 2) {
               Tab.index = 2;
               deleteId = id.toString();
               print(deleteId);
               var response = await _deleteId("reminder");
               print(response.body);
-                if(response.statusCode == 200){
-                  Fluttertoast.showToast(msg:"Success");
-                  Navigator.push(context,
-                      new MaterialPageRoute(builder: (context) => Tab.MyTabs()));
-                }
-                else{
-                  Fluttertoast.showToast(msg: "Failed");
-                }
+              if (response.statusCode == 200) {
+                Fluttertoast.showToast(msg: "Success");
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) => Tab.MyTabs()));
+              }
+              else {
+                Fluttertoast.showToast(msg: "Failed");
+              }
             }
           },
         ),
       ],
     );
-
   }
 
 }
@@ -137,17 +161,40 @@ class SildeAbleRowGoal extends StatelessWidget {
   final int amountAchieved;
   int nextPage;
   String deleteIdGoal;
+  TextEditingController amt = TextEditingController();
 
-   Future <http.Response> _deleteIdGoal () async {
+  Future <http.Response> _deleteIdGoal() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String url = pref.getString('url');
     String token = pref.getString('token');
     String uri = Uri.encodeFull(url + "/goal/" + deleteIdGoal.toString());
     print(uri);
     var response = await http.delete(uri, headers: {
+      'Content-type': 'application/json',
       'Accept': '*/*',
       'x-access-token': token
     });
+    return response;
+  }
+
+  Future <http.Response> _updateGoal() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String url = pref.getString('url');
+    String token = pref.getString('token');
+    String uri = Uri.encodeFull(url + "/goal");
+    print(uri);
+    print(id);
+    var bodyEncode = json.encode({
+      "id": id.toString(),
+      "amount": amt.text
+    });
+    print(bodyEncode);
+    var response = await http.put(uri, headers: {
+      'Content-type': 'application/json',
+      'Accept': '*/*',
+      'x-access-token': token
+    }, body: bodyEncode);
+
     return response;
   }
 
@@ -159,6 +206,7 @@ class SildeAbleRowGoal extends StatelessWidget {
     @required this.purpose,
     @required this.nextPage
   });
+
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -197,15 +245,26 @@ class SildeAbleRowGoal extends StatelessWidget {
           caption: 'Add amount',
           color: Colors.green[400],
           icon: Icons.attach_money,
-          onTap: null,
+          onTap: () async {
+            print(id);
+            await _showMyDialog(context);
+          },
         ),
         IconSlideAction(
           caption: 'Edit',
           color: Colors.black45,
           icon: Icons.edit,
           onTap: () {
+            print(date+amountAchieved.toString()+amount.toString()+purpose);
             Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => MyGoalPage()));
+                new MaterialPageRoute(builder: (context) => MyGoalPage(
+                    id:id.toString(),
+                    dateText: date,
+                    amountSaveText: amountAchieved,
+                    amountText: amount,
+                  descriptionText: purpose,
+                  enabled:"true",
+                )));
           },
         ),
         IconSlideAction(
@@ -214,24 +273,67 @@ class SildeAbleRowGoal extends StatelessWidget {
           icon: Icons.delete,
           onTap: () async {
             print('Delete called');
-            if (nextPage ==1){
+            if (nextPage == 1) {
               Tab.index = 1;
               deleteIdGoal = id.toString();
               print(deleteIdGoal);
               var response = await _deleteIdGoal();
               print(response.body);
-                if(response.statusCode == 200){
-                  Fluttertoast.showToast(msg:"Success");
-                  Navigator.push(context,
-                      new MaterialPageRoute(builder: (context) => Tab.MyTabs()));
-                }
-                else{
-                  Fluttertoast.showToast(msg: "Failed");
-                }
+              if (response.statusCode == 200) {
+                Fluttertoast.showToast(msg: "Success");
+              }
+              else {
+                Fluttertoast.showToast(msg: "Failed");
+              }
             }
           },
         ),
       ],
+    );
+  }
+
+  Future<void> _showMyDialog(context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter amount to save: '),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextField(
+                  controller: amt,
+                  decoration: InputDecoration(
+                      hintText: "Enter amount"
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Approve'),
+              onPressed: () async {
+                print(id);
+                var response = await _updateGoal();
+                print(response.body);
+                if (response.statusCode == 200) {
+                  Fluttertoast.showToast(msg: "Success");
+                }
+                else {
+                  Fluttertoast.showToast(msg: "Failure");
+                }
+                Tab.index = 2;
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new Tab.MyTabs()));
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

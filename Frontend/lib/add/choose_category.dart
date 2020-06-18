@@ -116,9 +116,9 @@ Widget createCategoryDialog(BuildContext context){
               }
               else{
                 // Added the new category to database
-              addCategory('0', new_category.text, '01-06-2020', true);
-              addCategory('0', new_category.text, '01-07-2020', true);
-              addCategory('0', new_category.text, '01-08-2020', true);
+//              addCategory('0', new_category.text, '01-06-2020', true);
+//              addCategory('0', new_category.text, '01-07-2020', true);
+//              addCategory('0', new_category.text, '01-08-2020', true);
 
               categories.removeLast(); // To show new category before the add category
               categories.removeLast();

@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _loadUrl() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      prefs.setString('url', 'http://4870610a6066.ngrok.io');
+      prefs.setString('url', 'http://f8e39aa4ce5c.ngrok.io');
     });
   }
 
@@ -167,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       TextFormField(
                         validator: (value) {
                           RegExp regExp = new RegExp(
-                            r"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$",
+                            r"^[\w+?\.]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$",
                           );
                           if (!regExp.hasMatch(value)) {
                             return 'Please Enter a valid Email Address';

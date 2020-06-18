@@ -9,7 +9,13 @@ import './choose_category.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class MyTransPage extends StatefulWidget {
-  MyTransPage({Key key, this.title}) : super(key: key);
+  MyTransPage({Key key, this.title, this.id, this.dateText, this.amountText, this.descriptionText, this.labelText, this.enabled}) : super(key: key);
+  final String labelText;
+  final String dateText;
+  final int amountText;
+  final String descriptionText;
+  final String enabled;
+  final String id;
   final String title;
 
   @override
@@ -39,6 +45,24 @@ class _MyTransPageState extends State<MyTransPage> {
   String url;
   String token;
 
+  @override
+  void initState() {
+    _description = TextEditingController();
+    _label = TextEditingController();
+    _date = TextEditingController();
+    _amount = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _description.text = widget.descriptionText;
+    _date.text = widget.dateText;
+    _amount.text = widget.amountText==null?"":widget.amountText.toString();
+    _label.text = widget.labelText==null?"":widget.labelText.toString();
+    super.didChangeDependencies();
+  }
+
   Future<http.Response> addTransaction(
       String amount,String date, String description) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -57,7 +81,20 @@ class _MyTransPageState extends State<MyTransPage> {
       'Accept': 'application/json',
       'x-access-token': token
     };
-    var response = await http.post(uri, headers: headers, body: bodyEncoded);
+    var response;
+    if(widget.enabled=="true"){
+      bodyEncoded = json.encode({
+        "id":widget.id,
+        "date": date,
+        "description": description,
+        "amount": amount,
+        "label": _label.text
+      });
+      response = await http.patch(uri,headers:headers, body:bodyEncoded);
+    }
+    else{
+      response = await http.post(uri, headers: headers, body: bodyEncoded);
+    }
     return (response);
   }
   @override
@@ -210,8 +247,8 @@ class _MyTransPageState extends State<MyTransPage> {
       //we wait for the dialog to return
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2025),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2050),
     );
     if (d != null) //if the user has selected a date
       setState(() {

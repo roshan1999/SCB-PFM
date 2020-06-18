@@ -3,7 +3,7 @@ from ..Token import *
 from model import *
 from flask import request,jsonify,make_response
 # Create a Category
-@app.route('/category', methods=['POST'])
+@app.route('/category', methods=['PATCH'])
 @token_required
 def add_category(current_user):
   label = request.json['label']

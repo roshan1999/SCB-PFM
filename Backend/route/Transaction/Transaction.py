@@ -17,12 +17,26 @@ def add_transaction(current_user):
   user_public_id = current_user.public_id
   stri = str(date_form.year) + "-"+str(date_form.month)+"-"+"1"
   my_date = datetime.strptime(stri, "%Y-%m-%d")
-  category = Category.query.filter_by(public_id = user_public_id, label = request.json['label'], month = my_date).first();
-  print(my_date)
-  category.amount = category.amount + int(amount)
+  try:
+      category = Category.query.filter_by(public_id = user_public_id, label = request.json['label'], month = my_date).first();
+      print(my_date)
+      category.amount = category.amount + int(amount)
+  except:
+      print("category not found... adding category")
+      label = request.json['label']
+      month = my_date
+      if(label=="Salary" or label=="Rental" or label =="Other income"):
+          cat_type=0
+      else:
+          cat_type=1
+      user_public_id = current_user.public_id
+      category = Category(label, month, cat_type, user_public_id)
+      category.amount = category.amount + int(amount)
+      print(category.amount)
+      db.session.add(category)
+      db.session.commit()
 
   new_transaction = Transaction(amount, date, description, category.id, user_public_id)
-
   db.session.add(new_transaction)
   db.session.commit()
 
@@ -48,14 +62,14 @@ def get_transaction(current_user,id):
 
 
 # Update a Transaction
-@app.route('/transaction/<id>', methods=['PATCH'])
+@app.route('/transaction', methods=['PATCH'])
 @token_required
-def update_transaction(current_user,id):
-  transact = transaction.query.get(id)
-
+def update_transaction(current_user):
+  transact = transaction.query.get(request.json["id"])
   new_req = request.json
   for key,value in new_req.items():
-      setattr(transact,key,value)
+      if(key!="id"):
+          setattr(transact,key,value)
 
   db.session.commit()
 

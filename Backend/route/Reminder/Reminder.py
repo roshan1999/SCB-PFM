@@ -26,7 +26,7 @@ def add_reminder(current_user):
 @token_required
 def get_reminders(current_user):
   user_rem = User.query.filter_by(public_id = current_user.public_id).first()
-  result = user_rem.reminders.all()
+  result = user_rem.reminders.order_by(Reminder.due_date.asc())
   return reminders_schema.jsonify(result)
 
 
@@ -51,14 +51,15 @@ def mark_rem_complete(current_user,id):
 
 
 # Update a Reminder
-@app.route('/reminder/<id>', methods=['PATCH'])
+@app.route('/reminder', methods=['PATCH'])
 @token_required
-def update_reminder(current_user,id):
-  reminder = Reminder.query.get(id)
+def update_reminder(current_user):
+  reminder = Reminder.query.get(request.json["id"])
 
-  new_req = request.json
-  for key,value in new_req.items():
-      setattr(reminder,key,value)
+  reminder.amount = request.json['amount']
+  reminder.due_date = request.json['due_date']
+  reminder.description = request.json['description']
+  reminder.achieved = 0
 
   db.session.commit()
 

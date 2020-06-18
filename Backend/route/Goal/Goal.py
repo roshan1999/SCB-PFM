@@ -29,13 +29,35 @@ def add_goal(current_user):
   db.session.commit()
   return goal_schema.jsonify(new_goal)
 
+@app.route('/goal', methods=['PATCH'])
+@token_required
+# can use for update(by maintaing flag)
+def update_goal(current_user):
+  due_date = request.json['due_date']
+  description = request.json['description']
+  amount_total = request.json['amount_total']
+  amount_saved = request.json['amount_saved']
+  public_id = current_user.public_id
+  goal = Goal.query.get(request.json["id"]);
+  goal.due_date = due_date
+  goal.description = description
+  goal.amount_total = amount_total
+  goal.amount_saved = amount_saved
+  print(amount_total)
+  print(goal)
+  db.session.commit()
+  return goal_schema.jsonify(goal)
+
+
 @app.route('/goal', methods = ['PUT'])
 @token_required
 def amt_goal (current_user):
-    id = request.json['id']
+    print("called")
+    print(request.json['amount'])
     amt = request.json['amount']
-    goal_fetch = Goal.query.get(id)
-    goal_fetch.amount_saved+=amt
+    goal_id = request.json['id']
+    goal_fetch = Goal.query.get(goal_id)
+    goal_fetch.amount_saved+=int(amt)
     db.session.commit()
     return goal_schema.jsonify(goal_fetch)
 
