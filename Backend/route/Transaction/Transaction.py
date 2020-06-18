@@ -90,5 +90,4 @@ def delete_transaction(current_user, id):
   category.amount = category.amount - transact.amount
   db.session.delete(transact)
   db.session.commit()
-
   return transaction_schema.jsonify(transact)
