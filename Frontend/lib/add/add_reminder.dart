@@ -9,12 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class MyReminderPage extends StatefulWidget {
-  final String dateText;
-  final int amountText;
-  final String descriptionText;
-  final String enabled;
-  final String id;
-  MyReminderPage({Key key, this.title, this.id, this.dateText, this.amountText, this.descriptionText, this.enabled}) : super(key: key);
+  MyReminderPage({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
@@ -41,26 +36,9 @@ class _MyReminderPageState extends State<MyReminderPage> {
   List<String> itemList = ['Weekly', 'Monthly', 'Yearly'];
 
 
-  TextEditingController _date ;
-  TextEditingController _amount ;
-  TextEditingController _description ;
-  TextEditingController _frequency;
-  TextEditingController _repeat_gap;
-  @override
-  void initState() {
-    _description = TextEditingController();
-    _date = TextEditingController();
-    _amount = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    _description.text = widget.descriptionText;
-    _date.text = widget.dateText;
-    _amount.text = widget.amountText==null?"":widget.amountText;
-    super.didChangeDependencies();
-  }
+  TextEditingController _date = new TextEditingController();
+  TextEditingController _amount = new TextEditingController();
+  TextEditingController _description = new TextEditingController();
 
   String url;
   String token;
@@ -78,22 +56,8 @@ class _MyReminderPageState extends State<MyReminderPage> {
       'Content-type': 'application/json',
       'Accept': 'application/json',
       'x-access-token':token
-    };
-    var response;
-    if(widget.enabled=="true"){
-      print("Patch Update");
-      uri = Uri.encodeFull(url + "/reminder");
-      bodyEncoded = json.encode({
-        "id":widget.id,
-        "due_date": date,
-        "description": description,
-        "amount": amount
-      });
-      response = await http.patch(uri,headers:headers, body:bodyEncoded);
-    }
-    else{
-      response = await http.post(uri, headers: headers, body: bodyEncoded);
-    }
+  };
+    var response = await http.post(uri, headers: headers, body: bodyEncoded);
     return (response);
   }
 
@@ -124,9 +88,9 @@ class _MyReminderPageState extends State<MyReminderPage> {
       if (_isChecked == true) {
         test.removeLast();
         test.add(SizedBox(height:0.0));
-        test.add(buildForm(Icons.account_balance_wallet, "Number of Transactions to repeat", _frequency,context));
+        test.add(buildForm(Icons.account_balance_wallet, "Number of Transactions to repeat", context));
         test.add(SizedBox(height:20.0));
-        test.add(buildDropList("Frequency", itemList, "Monthly", _repeat_gap,context, fntSz: 18));
+        test.add(buildDropList("Frequency", itemList, "Monthly", context, fntSz: 18));
         test.add(SizedBox(height:20.0));
         test.add(buildButtonBar());
       } else {
@@ -146,8 +110,8 @@ class _MyReminderPageState extends State<MyReminderPage> {
       SizedBox(height: 40),
       buildHeader(),
       SizedBox(height: 30),
-      buildDropList("Enter Amount", currDrop, currency, _amount,context),
-      buildForm(Icons.note_add,"Enter Description", _description,context),
+      buildDropList("Enter Amount", currDrop, currency, context),
+      buildForm(Icons.note_add,"Enter Description", context),
       buildDueDate(context),
       SizedBox(height: 20.0),
       buildCheckBox(context),
@@ -167,7 +131,7 @@ class _MyReminderPageState extends State<MyReminderPage> {
     );
   }
 
-  Row buildDropList(hintTxt,itemLst,currValue, _amount,BuildContext context, {double fntSz=24}) {
+  Row buildDropList(hintTxt,itemLst,currValue, BuildContext context, {double fntSz=24}) {
     return Row(
       children: <Widget>[
         Container(
@@ -232,7 +196,7 @@ class _MyReminderPageState extends State<MyReminderPage> {
         });
   }
 
-  Padding buildForm(icon, hintTxt, _description,BuildContext context){
+  Padding buildForm(icon, hintTxt, BuildContext context){
     return Padding(
       padding: const EdgeInsets.fromLTRB(28, 25, 18.0, 0),
       child: TextFormField(
