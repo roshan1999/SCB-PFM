@@ -1,6 +1,9 @@
+import 'package:final_project/home/SplashScreen.dart';
+import 'package:final_project/main.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './feed/reminder_feed.dart' as Rem;
 
@@ -11,6 +14,7 @@ import './feed/transaction_feed.dart' as Tra;
 import './feed/tabbar.dart' as tab;
 
 import './notification_alerts/notifications.dart';
+import 'home/HomePage.dart';
 
 class ActiveSideBar extends StatelessWidget {
   @override
@@ -23,6 +27,7 @@ class ActiveSideBar extends StatelessWidget {
         "/Transaction": (BuildContext context) => Tra.Transaction(),
         "/tab": (BuildContext context) => tab.MyTabs(),
         "/notification": (BuildContext context) => NotificationNAlerts(),
+        "/Home" : (BuildContext context) => HomePage(),
       },
     );
   }
@@ -199,6 +204,29 @@ class SideBar extends StatelessWidget {
                 },
               ),
             ),
+//            Container(
+//                margin: EdgeInsets.all(5),
+//                child: ListTile(
+//                  leading: const Icon(Icons.power),
+//                  title: Text(
+//                    'Logout',
+//                    style: GoogleFonts.lato(
+//                      fontSize: 18,
+//                      fontWeight: FontWeight.bold,
+//                    ),
+//                  ),
+//                  onTap: () async{
+//                    SharedPreferences prefs = await SharedPreferences.getInstance();
+//                    prefs?.clear();
+//                    Navigator.pushAndRemoveUntil(
+//                        context,
+//                        MaterialPageRoute(
+//                            builder: (context) => new SplashScreen()),
+//                        ModalRoute.withName("/Home")
+//                    );
+//                  },
+//              ),
+//            )
           ],
         ),
       ),

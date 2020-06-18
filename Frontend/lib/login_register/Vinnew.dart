@@ -228,7 +228,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       if (response.statusCode == 200) {
                                         await storeToken(result['token']);
                                         debugPrint('Homepage');
-                                        Navigator.push(
+                                        Navigator.pushReplacement(
                                           context,
                                           new MaterialPageRoute(
                                               builder: (context) => HomePage()),
