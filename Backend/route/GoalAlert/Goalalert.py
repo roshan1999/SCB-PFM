@@ -6,8 +6,7 @@ from sqlalchemy import func
 from datetime import datetime, date
 import json
 import dateutil.relativedelta
-# Get all goals
-
+# Get alert
 
 @app.route('/alert', methods=['GET'])
 @token_required
@@ -47,7 +46,7 @@ def get_alert_goal(current_user):
   print(total_expense)
   trigger = (total_income-total_expense) - sum(goal_saving_needed_per_month)
   if trigger<0:
-   return jsonify({"message" : "Alert Generated"}) 
+   return jsonify({"message" : "fail"}) 
   else:
-      return  jsonify({"message" : "Your goals are on track"})
+      return  jsonify({"message" : "success"})
 
