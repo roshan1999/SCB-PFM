@@ -2,12 +2,13 @@ from myapp import app
 from ..Token import *
 from model import *
 from flask import request,jsonify,make_response
+from datetime import datetime
 # Create a Category
 @app.route('/category', methods=['PATCH'])
 @token_required
 def add_category(current_user):
   label = request.json['label']
-  month = request.json['month'] ## Format (01-MM-YYYY)
+  month = datetime.strptime(request.json['month'], "%d-%m-%Y") ## Format (01-MM-YYYY)
   cat_type = request.json['cat_type']
   amount = request.json['amount']
   user_public_id = current_user.public_id

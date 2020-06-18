@@ -2,13 +2,14 @@ from myapp import app
 from ..Token import *
 from model import *
 from flask import request,jsonify,make_response
+from datetime import datetime
 
 # Create a Reminder
 @app.route('/reminder', methods=['POST'])
 @token_required
 def add_reminder(current_user):
   amount = request.json['amount']
-  due_date = request.json['due_date']
+  due_date = datetime.strptime(request.json['due_date'] , "%d-%m-%Y")
   description = request.json['description']
   achieved = 0
   user_public_id = current_user.public_id
@@ -57,7 +58,7 @@ def update_reminder(current_user):
   reminder = Reminder.query.get(request.json["id"])
 
   reminder.amount = request.json['amount']
-  reminder.due_date = request.json['due_date']
+  reminder.due_date = datetime.strptime(request.json['due_date'],"%d-%m-%Y")
   reminder.description = request.json['description']
   reminder.achieved = 0
 

@@ -9,11 +9,10 @@ from datetime import datetime
 @token_required
 def add_transaction(current_user):
   amount = request.json['amount']
-  date = request.json['date']
+  date_form = datetime.strptime(request.json['date'],"%d-%m-%Y")
   description = request.json['description']
   print
-  date_form = datetime.strptime(date, "%d-%m-%Y")
-  print(date)
+  print(date_form)
   user_public_id = current_user.public_id
   stri = str(date_form.year) + "-"+str(date_form.month)+"-"+"1"
   my_date = datetime.strptime(stri, "%Y-%m-%d")
@@ -36,7 +35,7 @@ def add_transaction(current_user):
       db.session.add(category)
       db.session.commit()
 
-  new_transaction = Transaction(amount, date, description, category.id, user_public_id)
+  new_transaction = Transaction(amount, date_form, description, category.id, user_public_id)
   db.session.add(new_transaction)
   db.session.commit()
 
@@ -65,7 +64,7 @@ def get_transaction(current_user,id):
 @app.route('/transaction', methods=['PATCH'])
 @token_required
 def update_transaction(current_user):
-  transact = transaction.query.get(request.json["id"])
+  transact = Transaction.query.get(request.json["id"])
   new_req = request.json
   for key,value in new_req.items():
       if(key!="id"):
