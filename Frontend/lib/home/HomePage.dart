@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:final_project/login_register/Vinnew.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -14,6 +17,12 @@ import 'package:final_project/add/add_goal.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+
+class HomePage extends StatelessWidget {
+  var res;
+  String str;
 
 import 'SplashScreen.dart';
 
@@ -59,7 +68,15 @@ class _HomePageState extends State<HomePage> {
               color: Colors.black,
               child: RaisedButton(
               onPressed:()async {var response = await getAlert();
-              if(response.statusCode()==200){
+              print(response.body);
+              // print('here');
+              if(response.statusCode==200){
+                res=json.decode(response.body);
+                print(res);
+                print('here');
+                if(res['message']=="success")
+                str="You are on track as of your last months expenses";
+                  _showResult(context, str);
               }
               },
               child: Text('Check if you can meet all your goals or not',
@@ -139,6 +156,7 @@ Future<void> _showResult(context , String message) async {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
+                Text(message),
               ],
             ),
           ),
@@ -152,6 +170,7 @@ Future<dynamic> getAlert() async {
     var isLoading = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     url = prefs.getString('url');
+    print(url);
     token = prefs.getString('token');
     var response = await http.get(
         Uri.encodeFull(url+ "/alert"), headers: {
@@ -160,9 +179,6 @@ Future<dynamic> getAlert() async {
     'x-access-token': token
     });
     isLoading = false;
-    print(response.body);
-    if(response.statusCode==200)
+    // print(response.body);
     return response;
-    else
-      return "Fail";
   }
