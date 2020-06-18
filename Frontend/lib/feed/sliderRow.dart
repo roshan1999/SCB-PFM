@@ -228,7 +228,7 @@ class SildeAbleRowGoal extends StatelessWidget {
             ),
           ),
           title: Text(
-            amountAchieved.toString() + '/' + amount.toString(),
+            amountAchieved.toString() + 'out of' + amount.toString() + " saved",
             style: GoogleFonts.lato(
               fontSize: 18,
             ),
