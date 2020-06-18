@@ -3,13 +3,13 @@ from ..Token import *
 from model import *
 from flask import request,jsonify,make_response
 from sqlalchemy import func
-from datetime import date
+from datetime import datetime
 # Get all goals
 @app.route('/goal', methods=['GET'])
 @token_required
 def get_goal(current_user):
   user_goal = User.query.filter_by(public_id=current_user.public_id).first()
-  result = user_goal.goals.filter(func.DATE(Goal.due_date) > date.today()).order_by(Goal.due_date)
+  result = user_goal.goals.filter(func.DATE(Goal.due_date) > datetime.today()).order_by(Goal.due_date)
   db.session.commit()
   return goals_schema.jsonify(result)
 
@@ -18,7 +18,7 @@ def get_goal(current_user):
 @token_required
 # can use for update(by maintaing flag)
 def add_goal(current_user):
-  due_date = request.json['due_date']
+  due_date = datetime.strptime(request.json['due_date'], "%d-%m-%Y")
   description = request.json['description']
   amount_total = request.json['amount_total']
   amount_saved = request.json['amount_saved']
@@ -33,7 +33,7 @@ def add_goal(current_user):
 @token_required
 # can use for update(by maintaing flag)
 def update_goal(current_user):
-  due_date = request.json['due_date']
+  due_date = datetime.strptime(request.json['due_date'],"%d-%m-%Y")
   description = request.json['description']
   amount_total = request.json['amount_total']
   amount_saved = request.json['amount_saved']

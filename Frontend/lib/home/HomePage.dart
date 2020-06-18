@@ -11,6 +11,9 @@ import './LineGraph.dart';
 import 'package:final_project/add/add_transaction.dart';
 import 'package:final_project/add/add_reminder.dart';
 import 'package:final_project/add/add_goal.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import 'SplashScreen.dart';
 
@@ -53,8 +56,21 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             DashBoard(),
             Container(
+              color: Colors.black,
+              child: RaisedButton(
+              onPressed:()async {var response = await getAlert();
+              if(response.statusCode()==200){
+              }
+              },
+              child: Text('Check if you can meet all your goals or not',
+                  style: GoogleFonts.lato(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green[400])),
+            )),
+            Container(
               padding: EdgeInsets.all(20),
-              height: 300,
+              height: 250,
               margin: EdgeInsets.all(10),
               child: SimpleTimeSeriesChart(
                 createSampleData(),
@@ -114,3 +130,39 @@ class PlusButton extends StatelessWidget {
     );
   }
 }
+Future<void> _showResult(context , String message) async {
+    return showDialog<String>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+Future<dynamic> getAlert() async {
+    String url;
+    String token;
+    var isLoading = true;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    url = prefs.getString('url');
+    token = prefs.getString('token');
+    var response = await http.get(
+        Uri.encodeFull(url+ "/alert"), headers: {
+    'Content-type': 'application/json',
+    'Accept': '*/*',
+    'x-access-token': token
+    });
+    isLoading = false;
+    print(response.body);
+    if(response.statusCode==200)
+    return response;
+    else
+      return "Fail";
+  }

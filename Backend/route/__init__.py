@@ -6,3 +6,4 @@ from .User import *
 from .Category import *
 from .Goal import *
 from .GoalAlert import *
+from .Notifications import *
