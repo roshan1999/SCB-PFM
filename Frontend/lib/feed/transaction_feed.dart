@@ -36,7 +36,7 @@ class _TransactionState extends State<Transaction> {
     this.setState(() {
       debugPrint("abc");
       print(token);
-      print(Uri.encodeFull(url + "/reminder"));
+      print(Uri.encodeFull(url + "/transaction"));
       print(response.statusCode);
       data = json.decode(response.body);
       return (response.body);

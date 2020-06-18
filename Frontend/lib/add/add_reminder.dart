@@ -68,7 +68,7 @@ class _MyReminderPageState extends State<MyReminderPage> {
   void didChangeDependencies() {
     _description.text = widget.descriptionText;
     _date.text = widget.dateText;
-    _amount.text = widget.amountText == null ? "" : widget.amountText;
+    _amount.text = widget.amountText==null?"":widget.amountText.toString();
     super.didChangeDependencies();
   }
 
