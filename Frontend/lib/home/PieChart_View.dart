@@ -36,7 +36,7 @@ class PieChartView extends StatelessWidget {
             children: [
               Center(
                 child: SizedBox(
-                  width: constraint.maxWidth * 0.9,
+                  width: constraint.maxWidth * 0.7,
                   child: CustomPaint(
                     child: Center(),
                     foregroundPainter: PieChart(
@@ -48,7 +48,7 @@ class PieChartView extends StatelessWidget {
               ),
               Center(
                 child: Container(
-                  height: constraint.maxWidth * 0.66,
+                  height: constraint.maxWidth * 0.5,
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(193, 200, 233, 1),
                     shape: BoxShape.circle,
@@ -80,7 +80,7 @@ class PieChartView extends StatelessWidget {
 
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                       Center(
                         child: Text(
                           'Rs 3000.00',

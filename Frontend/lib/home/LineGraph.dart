@@ -70,6 +70,7 @@ class _SimpleTimeSeriesChartState extends State<SimpleTimeSeriesChart> {
       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
       domainFn: (TimeSeriesSales sales, _) => sales.time,
       measureFn: (TimeSeriesSales sales, _) => sales.sales,
+      // labelAccessorFn: (TimeSeriesSales , _) => ,
       data: tsdata,
     )
   ];

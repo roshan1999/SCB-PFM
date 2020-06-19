@@ -21,5 +21,5 @@ def create_user():
     new_user = User(public_id=str(uuid.uuid4()), name=data['name'], password=hashed_password, email = data['email'], admin=False)
     db.session.add(new_user)
     db.session.commit()
-    token = jwt.encode({'public_id' : new_user.public_id, 'exp' : datetime.utcnow() + timedelta(minutes=30)}, app.config['SECRET_KEY'])
+    token = jwt.encode({'public_id' : new_user.public_id, 'exp':datetime.utcnow()+timedelta(minutes = 30000) }, app.config['SECRET_KEY'])
     return jsonify({'message' : token.decode('UTF-8')})

@@ -1,6 +1,4 @@
-import 'package:final_project/home/SplashScreen.dart';
 import 'package:flutter/material.dart';
-
 import 'login_register/Vinnew.dart';
 
 

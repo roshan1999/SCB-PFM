@@ -8,7 +8,7 @@ import json
 import dateutil.relativedelta
 # Get alert
 
-@app.route('/alert', methods=['GET'])
+@app.route('/alert')
 @token_required
 def get_alert_goal(current_user):
   amount_complete=0
@@ -37,6 +37,7 @@ def get_alert_goal(current_user):
   for income in monthly_income:
       total_income += income.amount
   
+  ##This is previous months expense
   monthly_expense = Category.query.filter_by(public_id = current_user.public_id,cat_type = True, month = last_month)
   total_expense = 0
   for expense in monthly_expense:
@@ -45,10 +46,71 @@ def get_alert_goal(current_user):
   print(total_income)
   print(total_expense)
   trigger = (total_income-total_expense) - sum(goal_saving_needed_per_month)
+  behind = 0-trigger
   if trigger<0:
-   return jsonify({"message" : "fail"}) 
+   return jsonify({"message" : "fail","trivia":"You goals will not be achieved. Save "+str(behind)+" more to get back on track"}) 
   else:
       return  jsonify({"message" : "success"})
+
+
+@app.route('/divide_savings')
+@token_required
+def divide_savings(current_user):
+    user_goal = User.query.filter_by(public_id=current_user.public_id).first()
+    result = user_goal.goals.filter(func.DATE(Goal.due_date) > date.today()).order_by(Goal.due_date)
+    today = date.today()
+    this_month = today.replace(day=1)
+    first_date = today.replace(day=1)
+
+    ##Current months expense
+    monthly_expense = Category.query.filter_by(public_id = current_user.public_id,cat_type = True, month = this_month)
+    total_expense = 0
+    for expense in monthly_expense:
+        total_expense += expense.amount
+
+    ##Current month income
+    monthly_income = Category.query.filter_by(public_id = current_user.public_id,cat_type = False, month = first_date)
+    total_income = 0
+    for income in monthly_income:
+         total_income += income.amount
+    # response = get_alert_goal()
+    # print(response,type(response))
+    # response_from_alert = response.json()
+    # print(response_from_alert)
+    goal_saving_needed_this_month = []
+    for u in result:
+      goal_due_month = u.due_date
+      goal_due_month = goal_due_month.replace(day=1) ## First day of that month
+      months_remaining = (goal_due_month.year - today.year)*12 + (goal_due_month.month-today.month)
+      print(months_remaining)
+      if months_remaining>0:
+          goal_saving_needed_this_month.append((u.amount_total-u.amount_saved)/months_remaining)
+    
+
+    print(goal_saving_needed_this_month)
+    balance = total_income - total_expense
+    if(balance<0):
+        return jsonify({"message":"Not enough balance to divide any amount"})
+        
+    total_month_goal_amount = sum(goal_saving_needed_this_month)
+    if(total_month_goal_amount==0):
+        return jsonify({"message":"You have achieved all your goals"})
+
+    for goal in goal_saving_needed_this_month:
+        goal = (goal/total_month_goal_amount)*balance
+        
+    ## Add this in respective goals using Update method
+    i = 0
+    for goal in result:
+        print(goal.amount_saved)
+        print(goal_saving_needed_this_month[i])
+        goal.amount_saved += goal_saving_needed_this_month[i]
+        print(goal.description)
+        print(goal.amount_saved)
+        i = i + 1
+    
+    db.session.commit()
+    return jsonify({"message":"Savings divided into goals","each_goal_got":goal_saving_needed_this_month})
 
 
 @app.route('/linegraph' , methods=['GET'])
