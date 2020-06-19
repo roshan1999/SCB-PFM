@@ -38,10 +38,10 @@ class _MyTransPageState extends State<MyTransPage> {
   List<Widget> test = [];
   List<String> itemList = ['Weekly', 'Monthly', 'Yearly'];
 
-  TextEditingController _date = new TextEditingController();
-  TextEditingController _amount = new TextEditingController();
-  TextEditingController _description = new TextEditingController();
-  TextEditingController _label = new TextEditingController();
+  TextEditingController _date;
+  TextEditingController _amount;
+  TextEditingController _description;
+  TextEditingController _label;
   String url;
   String token;
 
@@ -59,7 +59,8 @@ class _MyTransPageState extends State<MyTransPage> {
     _description.text = widget.descriptionText;
     _date.text = widget.dateText;
     _amount.text = widget.amountText==null?"":widget.amountText.toString();
-    _label.text = widget.labelText==null?"":widget.labelText.toString();
+    _label.text = widget.labelText;
+    print("label = "+_label.text.toString() + widget.labelText.toString());
     super.didChangeDependencies();
   }
 
@@ -83,6 +84,7 @@ class _MyTransPageState extends State<MyTransPage> {
     };
     var response;
     if(widget.enabled=="true"){
+      print(_label.text);
       bodyEncoded = json.encode({
         "id":widget.id,
         "date": date,
@@ -370,7 +372,6 @@ class _MyTransPageState extends State<MyTransPage> {
             child: IgnorePointer(
               child: TextField(
                 controller: _label,
-                onChanged: (_label)=>{},
                 readOnly: true,
                 textAlign: TextAlign.center,
                 autofocus: false,

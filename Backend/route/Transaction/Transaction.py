@@ -47,8 +47,27 @@ def add_transaction(current_user):
 @token_required
 def get_transactions(current_user):
   user = User.query.filter_by(public_id = current_user.public_id).first()
+  lst = list()
+  dc = dict()
   result = user.transactions.order_by(Transaction.date.desc())
-  return transactions_schema.jsonify(result)
+  for transact in result:
+      cat_id = transact.category_id
+      cat_id = transact.category_id
+      my_date_month = transact.date.month
+      my_date_year = transact.date.year
+      stri = str(my_date_year) + "-"+str(my_date_month)+"-"+"1"
+      my_date = datetime.strptime(stri, "%Y-%m-%d")
+      category = Category.query.filter_by(public_id = current_user.public_id, month = my_date, id = cat_id).first();
+      print(category.label)
+      dc["id"] = transact.id
+      dc["amount"] = transact.amount
+      date = transact.date.strftime("%d-%m-%Y")
+      dc["date"] = date
+      dc["description"] =transact.description
+      dc["label"] =category.label
+      lst.append(dc)
+
+  return jsonify(lst)
 
 
 # Get Single Transaction
@@ -56,6 +75,7 @@ def get_transactions(current_user):
 @token_required
 def get_transaction(current_user,id):
   transaction = transaction.query.get(id)
+  print(transaction)
   return transaction_schema.jsonify(transaction)
 
 

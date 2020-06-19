@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import 'package:final_project/add/add_goal.dart';
 import 'package:final_project/add/add_reminder.dart';
 
@@ -44,7 +44,6 @@ class SildeAbleRow extends StatelessWidget {
     @required this.nextPage,
     this.label,
   });
-
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -96,8 +95,8 @@ class SildeAbleRow extends StatelessWidget {
                   )));
             }
             else if (nextPage == 0) {
-              print(date+amount.toString()+purpose);
-              Navigator.push(context,
+                    print(label);
+                  Navigator.push(context,
                   new MaterialPageRoute(builder: (context) => MyTransPage(
                     id:id.toString(),
                     dateText: date,
@@ -228,7 +227,7 @@ class SildeAbleRowGoal extends StatelessWidget {
             ),
           ),
           title: Text(
-            amountAchieved.toString() + '/' + amount.toString(),
+            amountAchieved.toString() + ' out of ' + amount.toString() + " saved ",
             style: GoogleFonts.lato(
               fontSize: 18,
             ),

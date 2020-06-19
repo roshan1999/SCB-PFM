@@ -1,9 +1,6 @@
-import 'package:final_project/home/SplashScreen.dart';
-import 'package:final_project/main.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import './feed/reminder_feed.dart' as Rem;
 
