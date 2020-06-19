@@ -24,7 +24,7 @@ def add_transaction(current_user):
       print("category not found... adding category")
       label = request.json['label']
       month = my_date
-      if(label=="Salary" or label=="Rental" or label =="Other income"):
+      if(label=="Salary" or label=="Rental" or label =="Other income" or label=="Income"):
           cat_type=0
       else:
           cat_type=1

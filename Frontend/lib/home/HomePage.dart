@@ -20,11 +20,18 @@ class HomePage extends StatefulWidget{
 }
 
 class _HomePageState extends State<HomePage> {
+  var homeCalled;
    String str;
+
+   @override
+   void initState(){
+     super.initState();
+   }
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    return Scaffold(
+    return RefreshIndicator(
+    child: Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
         elevation: 0,
@@ -60,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                     child: SimpleTimeSeriesChart(
                     createSampleData(),
-                    animate: false,
+                    animate: true,
                   ),
                 ),
               ),
@@ -71,6 +78,11 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+    ),
+      onRefresh: (){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomePage()));
+      return ;
+      }
     );
   }
 

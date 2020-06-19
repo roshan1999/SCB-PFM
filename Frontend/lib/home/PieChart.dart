@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:math';
-
+import 'package:http/http.dart' as http;
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PieChart extends CustomPainter {
   PieChart({@required this.categories, @required this.width});
@@ -54,12 +57,12 @@ class PieChart extends CustomPainter {
 
 class Category {
   Category(this.name, {@required this.amount});
-
   final String name;
   final double amount;
 }
 
-final kCategories = [
+var isLoading = true;
+List<Category> kCategories = [
   Category('groceries', amount: 500.00),
   Category('online Shopping', amount: 150.00),
   Category('eating', amount: 90.00),
