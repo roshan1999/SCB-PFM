@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            //DashBoard(),
+            DashBoard(),
             SizedBox(height: 5.0,),
             Card(
               color: Colors.white,

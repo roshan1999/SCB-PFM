@@ -58,7 +58,7 @@ def update_reminder(current_user):
   reminder = Reminder.query.get(request.json["id"])
 
   reminder.amount = request.json['amount']
-  reminder.due_date = datetime.strptime(request.json['due_date'],"%Y-%m-%d")
+  reminder.due_date = datetime.strptime(request.json['due_date'],"%d-%m-%Y")
   reminder.description = request.json['description']
   reminder.achieved = 0
 

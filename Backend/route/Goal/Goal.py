@@ -33,7 +33,7 @@ def add_goal(current_user):
 @token_required
 # can use for update(by maintaing flag)
 def update_goal(current_user):
-  due_date = datetime.strptime(request.json['due_date'],"%Y-%m-%d")
+  due_date = datetime.strptime(request.json['due_date'],"%d-%m-%Y")
   description = request.json['description']
   amount_total = request.json['amount_total']
   amount_saved = request.json['amount_saved']
