@@ -14,31 +14,11 @@ class DashBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return SizedBox(
-      height: height * 0.17,
+      height: height * 0.1,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
         child: Column(
           children: <Widget>[
-            Text(
-              "Welcome To",
-              style: GoogleFonts.lato(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: Colors.green,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                "Personal Finance Manager App",
-                textAlign: TextAlign.center,
-                style: GoogleFonts.lato(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.indigo,
-                ),
-              ),
-            ),
             Padding(
               padding: EdgeInsets.fromLTRB(10.0,8.0,10.0,0.0),
               child: Card(
@@ -66,21 +46,24 @@ class DashBoard extends StatelessWidget {
                           }
                         }
                         },
-                      child: Row(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(50,0,0,0),
+                        child: Row(
                     children: <Widget>[
-                      Text('Month wise expenses',
-                        style: GoogleFonts.lato(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
+                        Text('CHECK IF YOU ARE ON TRACK',
+                          style: GoogleFonts.lato(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      IconButton(
-                        iconSize: 25.0,
-                        icon:Icon(Icons.access_time),
-                        tooltip: 'Check if your goals are on track',
-                      ),
+                        IconButton(
+                          iconSize: 25.0,
+                          icon:Icon(Icons.directions_run, color: Colors.green,),
+                          tooltip: 'Check if your goals are on track',
+                        ),
                     ],
-                  )
+                  ),
+                      )
                     ),
                   ),
               ),

@@ -52,8 +52,8 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             DashBoard(),
             SizedBox(
+              height: height * 0.35,
               child: Container(
-                height: height * 0.35,
                 child: Card(
                   color: Colors.white,
                   shadowColor: Colors.green[50],
