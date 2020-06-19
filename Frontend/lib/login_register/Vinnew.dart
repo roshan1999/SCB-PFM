@@ -87,16 +87,31 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  checkStatus(){
+    SharedPreferences.getInstance().then((prefs){
+      var status = prefs.getString('token');
+      if (status ==null){
+        print(prefs.getString('token'));
+        return "Done";
+      }
+      else{
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomePage()));
+        return 'Done2';
+      }
+    });
+    return HomePage();
+  }
   @override
   void initState() {
     super.initState();
     _loadUrl();
+    checkStatus();
   }
 
   _loadUrl() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      prefs.setString('url', 'http://2e7939bd8c3a.ngrok.io');
+      prefs.setString('url', 'http://9c801442128a.ngrok.io');
     });
   }
 

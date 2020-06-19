@@ -13,7 +13,7 @@ import './feed/transaction_feed.dart' as Tra;
 
 import './feed/tabbar.dart' as tab;
 
-import './notification_alerts/notifications.dart';
+import './notification_alerts/notifications.dart' as not;
 import 'home/HomePage.dart';
 
 class ActiveSideBar extends StatelessWidget {
@@ -26,7 +26,7 @@ class ActiveSideBar extends StatelessWidget {
         "/Goals": (BuildContext context) => Gol.Goal(),
         "/Transaction": (BuildContext context) => Tra.Transaction(),
         "/tab": (BuildContext context) => tab.MyTabs(),
-        "/notification": (BuildContext context) => NotificationNAlerts(),
+        "/notification": (BuildContext context) => not.Notification(),
         "/Home" : (BuildContext context) => HomePage(),
       },
     );

@@ -48,6 +48,7 @@ def add_transaction(current_user):
 def get_transactions(current_user):
   user = User.query.filter_by(public_id = current_user.public_id).first()
   result = user.transactions.order_by(Transaction.date.desc())
+  print(transaction_schema(result));
   return transactions_schema.jsonify(result)
 
 

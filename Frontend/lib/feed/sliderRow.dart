@@ -44,7 +44,6 @@ class SildeAbleRow extends StatelessWidget {
     @required this.nextPage,
     this.label,
   });
-
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -96,8 +95,8 @@ class SildeAbleRow extends StatelessWidget {
                   )));
             }
             else if (nextPage == 0) {
-              print(date+amount.toString()+purpose);
-              Navigator.push(context,
+                    print(label);
+                  Navigator.push(context,
                   new MaterialPageRoute(builder: (context) => MyTransPage(
                     id:id.toString(),
                     dateText: date,

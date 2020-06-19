@@ -41,13 +41,13 @@ class _TransactionState extends State<Transaction> {
       data = json.decode(response.body);
       return (response.body);
     });
-    print(response.body);
     isLoading = false;
+    print(data);
     return "Success";
   }
 
   void initState() {
-    debugPrint("Test");
+    print("Test");
     this.getData();
     super.initState();
   }
@@ -68,7 +68,7 @@ class _TransactionState extends State<Transaction> {
                   amount: data[ind]['amount'],
                   date: data[ind]['date'].toString(),
                   purpose: data[ind]['description'],
-                  label: data[ind]['label'],
+                  label: data[ind]['label'].toString(),
                 nextPage: 0,
               ),
             );

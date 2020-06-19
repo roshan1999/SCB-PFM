@@ -28,7 +28,7 @@ class Notify extends StatelessWidget {
       elevation: 3.0,
       margin: EdgeInsets.fromLTRB(3, 5, 0, 0),
       child: Text(
-        'You have a reminder pending of ' + purpose +" " + amount.toString() + ' on ' +date.day.toString() +'-'+ date.month.toString(),
+        'You have a reminder pending of \"' + purpose +" " + amount.toString() + '\" on ' +date.day.toString() +'-'+ date.month.toString(),
         style: GoogleFonts.lato(
           fontSize: 18,
           color: Colors.lightBlueAccent,

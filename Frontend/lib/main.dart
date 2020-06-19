@@ -1,10 +1,13 @@
 import 'package:final_project/home/SplashScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'home/HomePage.dart';
 import 'login_register/Vinnew.dart';
 
 
 class FinanceApp extends StatelessWidget {
+
 
   @override
   Widget build(BuildContext context) {

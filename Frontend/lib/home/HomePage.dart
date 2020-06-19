@@ -5,17 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './DashBoard.dart';
 import './Monthly_Expenses.dart';
 import '../sidebar.dart';
-
-//import './graphData.dart' as Graph;
 import './LineGraph.dart';
 import 'package:final_project/add/add_transaction.dart';
 import 'package:final_project/add/add_reminder.dart';
 import 'package:final_project/add/add_goal.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-import 'SplashScreen.dart';
 
 class HomePage extends StatefulWidget {
   @override
