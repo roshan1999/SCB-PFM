@@ -13,7 +13,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-var isLoading;
 
 class HomePage extends StatefulWidget{
   @override
@@ -21,11 +20,10 @@ class HomePage extends StatefulWidget{
 }
 
 class _HomePageState extends State<HomePage> {
-   var res;
    String str;
   @override
   Widget build(BuildContext context) {
-//    final height = MediaQuery.of(context).size.height;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
@@ -52,66 +50,24 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            //DashBoard(),
-            SizedBox(height: 5.0,),
-            Card(
-              color: Colors.white,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(width:4.0),
-                  Text('Month wise expenses',
-              style: GoogleFonts.lato(
-                fontSize: 15.0,
-                fontWeight: FontWeight.bold,
-              ),
-                ),
-                SizedBox(width: 155.0,),
-                IconButton(
-                  iconSize: 25.0,
-                icon:Icon(Icons.access_time),
-                tooltip: 'Check if your goals are on track',
-              onPressed:()async {var response = await getAlert();
-              print(response.body);
-              // print('here');
-              if(response.statusCode==200){
-                res=json.decode(response.body);
-                print(res);
-                print('here');
-                if(res['message']=="success"){
-                str="You are on track as of your last months expenses";
-                  _showResult(context, str);
-                }
-                else if(res['message']=="fail"){
-                  str=res['trivia'];
-                  _showResult(context,str);
-                  }
-                else{
-                  str="server issues try again later";
-                  _showResult(context,str);
-                }
-              }
-              },
-            ),
-                ],
-              )
-            ),
-            Container(
-              padding: EdgeInsets.all(0),
-              height: 250,
-              margin: EdgeInsets.all(5),
-              child: Card(
-                color: Colors.white,
-                shadowColor: Colors.green[50],
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: SimpleTimeSeriesChart(
-                  createSampleData(),
-                  animate: false,
+            DashBoard(),
+            SizedBox(
+              height: height * 0.35,
+              child: Container(
+                child: Card(
+                  color: Colors.white,
+                  shadowColor: Colors.green[50],
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: SimpleTimeSeriesChart(
+                    createSampleData(),
+                    animate: false,
+                  ),
                 ),
               ),
             ),
             Card(
               color: Colors.white,
-              child: Flexible(child: MonthlyExpensesView())),
+              child: MonthlyExpensesView()),
           ],
         ),
       ),
@@ -164,51 +120,3 @@ class PlusButton extends StatelessWidget {
     );
   }
 }
-Future<void> _showResult(context , String message) async {
-    return showDialog<String>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          actions: <Widget>[
-            MaterialButton(
-              elevation: 5.0,
-              child: Text('Close'),
-              onPressed: (){
-                Navigator.pop(context);
-              },
-            ),
-          ],
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(message,
-                style: GoogleFonts.lato(
-                  fontSize:18,
-                  fontWeight:FontWeight.bold
-                ),),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-Future<dynamic> getAlert() async {
-    String url;
-    String token;
-    isLoading = true;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    url = prefs.getString('url');
-    print(url);
-    token = prefs.getString('token');
-    var response = await http.get(
-        Uri.encodeFull(url+ "/alert"), headers: {
-    'Content-type': 'application/json',
-    'Accept': '*/*',
-    'x-access-token': token
-    });
-    isLoading = false;
-    // print(response.body);
-    return response;
-  }

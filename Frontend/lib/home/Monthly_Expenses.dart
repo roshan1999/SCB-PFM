@@ -8,9 +8,9 @@ class MonthlyExpensesView extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return  SizedBox(
-                height: height * 0.5,
+                height: height * 0.34,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(25.0,10,25.0,100),
+                  padding: const EdgeInsets.fromLTRB(25.0,10,0.0,0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
