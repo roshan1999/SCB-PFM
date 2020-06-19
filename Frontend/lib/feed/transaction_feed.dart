@@ -37,6 +37,7 @@ class _TransactionState extends State<Transaction> {
     this.setState((){
       debugPrint("abc");
       print(Uri.encodeFull(url + "/transaction"));
+      print(response.body);
       data = json.decode(response.body);
       isLoading = false;
     });

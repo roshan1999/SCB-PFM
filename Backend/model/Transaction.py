@@ -18,4 +18,6 @@ class Transaction(db.Model):
 
 class TransactionSchema(ma.Schema):
   class Meta:
-    fields = ('id', 'amount', 'date', 'description', 'category_id','public_id',)
+    fields = ('id', 'amount', 'date', 'description', 'category_id','public_id')
+
+    

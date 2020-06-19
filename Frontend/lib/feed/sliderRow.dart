@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import 'package:final_project/add/add_goal.dart';
 import 'package:final_project/add/add_reminder.dart';
 
@@ -227,7 +227,7 @@ class SildeAbleRowGoal extends StatelessWidget {
             ),
           ),
           title: Text(
-            amountAchieved.toString() + 'out of' + amount.toString() + " saved",
+            amountAchieved.toString() + ' out of ' + amount.toString() + " saved ",
             style: GoogleFonts.lato(
               fontSize: 18,
             ),
