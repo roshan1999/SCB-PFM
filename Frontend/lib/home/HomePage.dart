@@ -1,6 +1,3 @@
-
-import 'dart:io';
-
 import 'package:final_project/login_register/Vinnew.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -16,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+var isLoading;
 
 class HomePage extends StatefulWidget{
   @override
@@ -27,10 +25,7 @@ class _HomePageState extends State<HomePage> {
    String str;
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery
-        .of(context)
-        .size
-        .height;
+//    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
@@ -168,7 +163,7 @@ Future<void> _showResult(context , String message) async {
 Future<dynamic> getAlert() async {
     String url;
     String token;
-    var isLoading = true;
+    isLoading = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     url = prefs.getString('url');
     print(url);

@@ -23,30 +23,26 @@ class _TransactionState extends State<Transaction> {
   String url;
   String token;
   var isLoading = true;
+  var response;
 
-  Future<String> getData() async {
+  Future<void> getData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     url = pref.getString('url');
     token = pref.getString('token');
-    var response = await http.get(Uri.encodeFull(url + "/transaction"), headers: {
+    response = await http.get(Uri.encodeFull(url + "/transaction"), headers: {
       'Content-type': 'application/json',
       'Accept': '*/*',
       'x-access-token': token
     });
-    this.setState(() {
+    this.setState((){
       debugPrint("abc");
-      print(token);
       print(Uri.encodeFull(url + "/transaction"));
-      print(response.statusCode);
       data = json.decode(response.body);
-      return (response.body);
+      isLoading = false;
     });
-    isLoading = false;
-    print(data);
-    return "Success";
   }
 
-  void initState() {
+  void initState(){
     print("Test");
     this.getData();
     super.initState();
