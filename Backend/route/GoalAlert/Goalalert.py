@@ -8,7 +8,7 @@ import json
 import dateutil.relativedelta
 # Get alert
 
-@app.route('/alert', methods=['GET'])
+@app.route('/alert')
 @token_required
 def get_alert_goal(current_user):
   amount_complete=0
@@ -55,6 +55,8 @@ def get_alert_goal(current_user):
 @app.route('/divide_savings')
 @token_required
 def divide_savings(current_user):
+    alert = []
+    alert.append(get_alert_goal(current_user))
     user_goal = User.query.filter_by(public_id=current_user.public_id).first()
     result = user_goal.goals.filter(func.DATE(Goal.due_date) > date.today()).order_by(Goal.due_date)
     today = date.today()
@@ -64,8 +66,8 @@ def divide_savings(current_user):
     total_expense = 0
     for expense in monthly_expense:
         total_expense += expense.amount
-    headers: {'Content-type': 'application/json','Accept': '*/*','x-access-token': token}
-    response = requests.get(url = 'http://127.0.0.1:5000/alert', headers = headers)
+    response = get_alert_goal(current_user)
+    print(response,type(response))
     response_from_alert = response.json()
     print(response_from_alert)
     income_this_month = response_from_alert['this_month_income']
