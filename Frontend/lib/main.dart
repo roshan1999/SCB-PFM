@@ -4,7 +4,6 @@ import 'login_register/Vinnew.dart';
 
 class FinanceApp extends StatelessWidget {
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
