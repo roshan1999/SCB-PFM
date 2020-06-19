@@ -36,6 +36,7 @@ def add_transaction(current_user):
       db.session.commit()
 
   new_transaction = Transaction(amount, date_form, description, category.id, user_public_id)
+  print(new_transaction.amount)
   db.session.add(new_transaction)
   db.session.commit()
 
@@ -48,17 +49,16 @@ def add_transaction(current_user):
 def get_transactions(current_user):
   user = User.query.filter_by(public_id = current_user.public_id).first()
   lst = list()
-  dc = dict()
-  result = user.transactions.order_by(Transaction.date.desc())
+  result = user.transactions.order_by(Transaction.date.desc()).all()
+  print(result)
   for transact in result:
-      cat_id = transact.category_id
+      dc = dict()
       cat_id = transact.category_id
       my_date_month = transact.date.month
       my_date_year = transact.date.year
       stri = str(my_date_year) + "-"+str(my_date_month)+"-"+"1"
       my_date = datetime.strptime(stri, "%Y-%m-%d")
       category = Category.query.filter_by(public_id = current_user.public_id, month = my_date, id = cat_id).first();
-      print(category.label)
       dc["id"] = transact.id
       dc["amount"] = transact.amount
       date = transact.date.strftime("%d-%m-%Y")
@@ -66,7 +66,6 @@ def get_transactions(current_user):
       dc["description"] =transact.description
       dc["label"] =category.label
       lst.append(dc)
-
   return jsonify(lst)
 
 
@@ -85,13 +84,23 @@ def get_transaction(current_user,id):
 @token_required
 def update_transaction(current_user):
   transact = Transaction.query.get(request.json["id"])
+  cat_id = transact.category_id
+  my_date_month = transact.date.month
+  my_date_year = transact.date.year
+  stri = str(my_date_year) + "-"+str(my_date_month)+"-"+"1"
+  my_date = datetime.strptime(stri, "%Y-%m-%d")
+  category = Category.query.filter_by(public_id = current_user.public_id, month = my_date, id = cat_id).first();
   new_req = request.json
   for key,value in new_req.items():
+      if(key == "amount"):
+          print(category.amount)
+          category.amount = category.amount - transact.amount
+          print(category.amount)
+          category.amount+=int(value)
+          print(category.amount)
       if(key!="id"):
           setattr(transact,key,value)
-
   db.session.commit()
-
   return transaction_schema.jsonify(transact)
 
 # Delete Transaction
