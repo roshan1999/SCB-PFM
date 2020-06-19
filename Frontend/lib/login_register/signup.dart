@@ -509,10 +509,7 @@ class HomePage1 extends StatelessWidget {
             padding: EdgeInsets.all(20),
             height: 300,
             margin: EdgeInsets.all(10),
-            child: SimpleTimeSeriesChart(
-              createSampleData(),
-              animate: false,
-            ),
+            child: SimpleTimeSeriesChart(),
           ),
           Graph.MyApp(),
         ],

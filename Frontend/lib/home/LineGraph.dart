@@ -2,49 +2,86 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 import 'package:flutter/material.dart';
 
-List<charts.Series<TimeSeriesSales, DateTime>> createSampleData() {
-  final data = [
-    new TimeSeriesSales(new DateTime(2020, 1, 31), 20),
-    new TimeSeriesSales(new DateTime(2020, 2, 31), 25),
-    new TimeSeriesSales(new DateTime(2020, 3, 31), 20),
-    new TimeSeriesSales(new DateTime(2020, 4, 31), 30),
-    new TimeSeriesSales(new DateTime(2020, 5, 31), 50),
-    new TimeSeriesSales(new DateTime(2020, 6, 31), 45),
-  ];
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-  return [
-    new charts.Series<TimeSeriesSales, DateTime>(
+class SimpleTimeSeriesChart extends StatefulWidget {
+  @override
+  _SimpleTimeSeriesChartState createState() => _SimpleTimeSeriesChartState();
+}
+
+class _SimpleTimeSeriesChartState extends State<SimpleTimeSeriesChart> {
+  List final_data;
+  @override
+    void initState(){
+      print('abc');
+      this.makeRequest();
+      super.initState();
+    }
+  Future<String> makeRequest() async {
+    String url;
+    String token;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    url = prefs.getString('url');
+    print(url);
+    token = prefs.getString('token');
+    var response = await http.get(
+        Uri.encodeFull(url+ "/linegraph"), headers: {
+    'Content-type': 'application/json',
+    'Accept': '*/*',
+    'x-access-token': token
+    });
+    this.setState(() {
+      print('setstate');
+      final_data = json.decode(response.body)['amount'];
+      print(response.body);
+    });
+    return response.body;
+  }
+  @override
+  Widget build(BuildContext context){
+    return chart();
+  }
+  Widget chart(){
+    var today = DateTime.now();
+    var i=0;
+    List<TimeSeriesSales> tsdata = [];
+    if(final_data!=null){
+    print(final_data);
+    for(int m in final_data){
+      print(i);
+      try {
+        tsdata.add(new TimeSeriesSales(DateTime(today.year ,today.month -i) , m));
+      } 
+      catch (e) {
+        print(e.toString());
+      }
+      i++; 
+    }
+    }
+    else {
+      tsdata.add(new TimeSeriesSales(DateTime(today.month), 20));
+    }
+    var final_Series=[
+      new charts.Series<TimeSeriesSales, DateTime>(
       id: 'Sales',
       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
       domainFn: (TimeSeriesSales sales, _) => sales.time,
       measureFn: (TimeSeriesSales sales, _) => sales.sales,
-      data: data,
+      // labelAccessorFn: (TimeSeriesSales , _) => ,
+      data: tsdata,
     )
   ];
-}
-
-class SimpleTimeSeriesChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
-
-  SimpleTimeSeriesChart(this.seriesList, {this.animate});
-
-  factory SimpleTimeSeriesChart.withSampleData() {
-    return new SimpleTimeSeriesChart(
-      createSampleData(),
-      animate: false,
-    );
+  var ans= new charts.TimeSeriesChart(
+  final_Series,
+  animate: true,
+  dateTimeFactory: const charts.LocalDateTimeFactory(),);
+  return ans;
   }
-  @override
-  Widget build(BuildContext context) {
-    return new charts.TimeSeriesChart(
-      seriesList,
-      animate: animate,
-      dateTimeFactory: const charts.LocalDateTimeFactory(),
-      );
-  }
-}
 
+}
 class TimeSeriesSales {
   final DateTime time;
   final int sales;

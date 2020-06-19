@@ -58,10 +58,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                   shadowColor: Colors.green[50],
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: SimpleTimeSeriesChart(
-                    createSampleData(),
-                    animate: false,
-                  ),
+                    child: SimpleTimeSeriesChart(),
                 ),
               ),
             ),

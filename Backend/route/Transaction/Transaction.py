@@ -4,7 +4,7 @@ from model import *
 from flask import request,jsonify,make_response
 from datetime import datetime
 
-# Create a Transactino
+# Create a Transactinon
 @app.route('/transaction', methods=['POST'])
 @token_required
 def add_transaction(current_user):
