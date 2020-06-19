@@ -92,10 +92,7 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.all(20),
               height: 250,
               margin: EdgeInsets.all(10),
-              child: SimpleTimeSeriesChart(
-                createSampleData(),
-                animate: false,
-              ),
+              child: SimpleTimeSeriesChart(),
             ),
             Flexible(child: MonthlyExpensesView()),
           ],
