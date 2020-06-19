@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -22,20 +23,33 @@ class Notify extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 3.0,
-      margin: EdgeInsets.fromLTRB(3, 5, 0, 0),
-      child: Text(
-        'You have a reminder pending of \"' + purpose +" " + amount.toString() + '\" on ' +date.day.toString() +'-'+ date.month.toString(),
-        style: GoogleFonts.lato(
-          fontSize: 18,
-          color: Colors.lightBlueAccent,
-        ),
+    return Container(
+      height: 50,
+          child: Card(
+        elevation: 3.0,
+        color: Colors.blue[50],
+        margin: EdgeInsets.fromLTRB(3, 5, 0, 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+          SizedBox(width:2.0),
+          Icon(Icons.warning,color: Colors.red,size: 45.0,),
+          SizedBox(width:10.0),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+          SizedBox(width:3.0),
+          Text('$purpose',style: GoogleFonts.lato(fontSize: 15.0,fontWeight: FontWeight.bold),),
+          SizedBox(height: 3.0,),
+          Text('₹ $amount on '+ date.day.toString()+ '-'+date.month.toString(),style: GoogleFonts.lato(fontSize:15.0,fontWeight: FontWeight.bold))
+        ],),
+        ],)
       ),
     );
   }
 }
-
 class Notification extends StatefulWidget {
   @override
   _NotificationState createState() => _NotificationState();
@@ -87,14 +101,12 @@ class _NotificationState extends State<Notification> {
               child: new ListView.builder(
                 itemCount: data == null ? 0 : data.length,
                 itemBuilder: (BuildContext context, int ind) {
-                  return new Card(
-                    child: Notify(
+                  return new Notify(
                       id: data[ind]['id'],
                       amount: data[ind]['amount'],
                       date: DateTime.parse(data[ind]['due_date']),
                       purpose: data[ind]['description'],
-                    ),
-                  );
+                    );
                 },
               ),
               onRefresh: getData,

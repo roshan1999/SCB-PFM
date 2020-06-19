@@ -87,20 +87,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  checkStatus(){
-    SharedPreferences.getInstance().then((prefs){
+  checkStatus() {
+    SharedPreferences.getInstance().then((prefs) {
       var status = prefs.getString('token');
-      if (status ==null){
+      if (status == null) {
         print(prefs.getString('token'));
         return "Done";
-      }
-      else{
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomePage()));
+      } else {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
         return 'Done2';
       }
     });
     return HomePage();
   }
+
   @override
   void initState() {
     super.initState();
@@ -225,47 +226,49 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           )),
                       SizedBox(height: 40),
-                      Container(
-                        height: 40.0,
-                        child: Material(
-                            borderRadius: BorderRadius.circular(20.0),
-                            shadowColor: Colors.greenAccent,
-                            color: Colors.green,
-                            elevation: 7.0,
-                            child: GestureDetector(
-                                onTap: () {
-                                  if (_formKey.currentState.validate()) {
-                                    login(email.text.replaceAll(' ', ''),
-                                            password.text)
-                                        .then((response) async {
-                                      result = jsonDecode(response.body);
-                                      print(result);
-                                      if (response.statusCode == 200) {
-                                        await storeToken(result['token']);
-                                        debugPrint('Homepage');
-                                        Navigator.pushReplacement(
-                                          context,
-                                          new MaterialPageRoute(
-                                              builder: (context) => HomePage()),
-                                        );
-                                      } else {
-                                        final snackBar =
-                                            SnackBar(content: Text("Invalid"));
-                                        Scaffold.of(context)
-                                            .showSnackBar(snackBar);
-                                        print(response.statusCode);
-                                      }
-                                    });
-                                  }
-                                },
-                                child: Center(
-                                    child: Text(
-                                  'LOGIN',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )))),
+                      GestureDetector(
+                        onTap: () {
+                                    if (_formKey.currentState.validate()) {
+                                      login(email.text.replaceAll(' ', ''),
+                                              password.text)
+                                          .then((response) async {
+                                        result = jsonDecode(response.body);
+                                        print(result);
+                                        if (response.statusCode == 200) {
+                                          await storeToken(result['token']);
+                                          debugPrint('Homepage');
+                                          Navigator.pushReplacement(
+                                            context,
+                                            new MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HomePage()),
+                                          );
+                                        } else {
+                                          final snackBar = SnackBar(
+                                              content: Text("Invalid"));
+                                          Scaffold.of(context)
+                                              .showSnackBar(snackBar);
+                                          print(response.statusCode);
+                                        }
+                                      });
+                                    }
+                                  },
+                        child: Container(
+                          height: 40.0,
+                          child: Material(
+                              borderRadius: BorderRadius.circular(20.0),
+                              shadowColor: Colors.greenAccent,
+                              color: Colors.green,
+                              elevation: 7.0,
+                                  child: Center(
+                                      child: Text(
+                                    'LOGIN',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ))),
+                        ),
                       ),
                       SizedBox(height: 20.0),
                       Container(
@@ -287,7 +290,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                 Center(
                                   child: Text(
-                                    'Log in with SC CASA',
+                                    'Bank with SC Mobile',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),

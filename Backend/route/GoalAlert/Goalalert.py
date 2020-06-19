@@ -8,7 +8,7 @@ import json
 import dateutil.relativedelta
 # Get alert
 
-@app.route('/alert', methods=['GET'])
+@app.route('/alert')
 @token_required
 def get_alert_goal(current_user):
   amount_complete=0
@@ -45,10 +45,45 @@ def get_alert_goal(current_user):
   print(total_income)
   print(total_expense)
   trigger = (total_income-total_expense) - sum(goal_saving_needed_per_month)
+  behind = 0-trigger
   if trigger<0:
-   return jsonify({"message" : "fail"}) 
+   return jsonify({"message" : "fail","trivia":"You goals will not be achieved. Save "+str(behind)+" more to get back on track"}) 
   else:
       return  jsonify({"message" : "success"})
+
+
+@app.route('/divide_savings')
+@token_required
+def divide_savings(current_user):
+    alert = []
+    alert.append(get_alert_goal(current_user))
+    user_goal = User.query.filter_by(public_id=current_user.public_id).first()
+    result = user_goal.goals.filter(func.DATE(Goal.due_date) > date.today()).order_by(Goal.due_date)
+    today = date.today()
+    this_month = today.replace(day=1)
+
+    monthly_expense = Category.query.filter_by(public_id = current_user.public_id,cat_type = True, month = this_month)
+    total_expense = 0
+    for expense in monthly_expense:
+        total_expense += expense.amount
+    response = get_alert_goal(current_user)
+    print(response,type(response))
+    response_from_alert = response.json()
+    print(response_from_alert)
+    income_this_month = response_from_alert['this_month_income']
+    goal_saving_needed_this_month = response_from_alert['goal_saving_needed_this_month']
+    print(goal_saving_needed_this_month)
+    print(income_this_month)
+    balance = income_this_month - total_expense
+    if(balance<0):
+        return jsonify({"message":"Not enough balance to divide any amount"})
+        
+    total_month_goal_amount = sum(goal_saving_needed_this_month)
+    for goal in goal_saving_needed_this_month:
+        goal = (goal/total_month_goal_amount)*balance
+        ## Add this in respective goals using Update method
+
+    return jsonify({"message":"Savings divided into goals","each_goal_got":goal_saving_needed_this_month})
 
 
 @app.route('/linegraph' , methods=['GET'])
