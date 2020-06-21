@@ -11,6 +11,7 @@ import './feed/transaction_feed.dart' as Tra;
 import './feed/tabbar.dart' as tab;
 
 import './notification_alerts/notifications.dart' as not;
+
 import 'home/HomePage.dart';
 import 'about/about.dart';
 import 'package:shared_preferences/shared_preferences.dart';

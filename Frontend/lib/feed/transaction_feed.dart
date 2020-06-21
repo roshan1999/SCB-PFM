@@ -11,7 +11,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import '../sidebar.dart';
-import '../home/HomePage.dart';
+import '../login_register/PlusButton.dart';
+
 
 class Transaction extends StatefulWidget {
   @override
@@ -75,7 +76,7 @@ class _TransactionState extends State<Transaction> {
         onRefresh: getData,
       )
       : Center(child: CircularProgressIndicator()),
-     floatingActionButton: PlusButton(), 
+     floatingActionButton: PlusButton(),
     );
   }
 }

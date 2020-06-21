@@ -317,7 +317,7 @@ class _MyGoalPageState extends State<MyGoalPage> {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(0);
             debugPrint("Discard Called");
           },
           textColor: Colors.blueAccent,

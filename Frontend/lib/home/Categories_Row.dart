@@ -18,7 +18,9 @@ class CategoriesRow extends StatefulWidget {
 class _CategoriesRowState extends State<CategoriesRow> {
   var isLoading;
   List Data = [];
-  List<Category> myCategories= [];
+  List<Category> myExpenseCategories= [];
+  List<Category> myIncomeCategories= [];
+
   Future getCategory() async {
     final prefs = await SharedPreferences.getInstance();
     String url = prefs.getString('url');
@@ -40,9 +42,12 @@ class _CategoriesRowState extends State<CategoriesRow> {
 
       for(int i =0;i<Data.length;i++){
         if(Data[i]["cat_type"]==true)
-          myCategories.add(Category(Data[i]["label"], amount: double.parse(Data[i]["amount"].toString())));
+          myExpenseCategories.add(Category(Data[i]["label"], amount: double.parse(Data[i]["amount"].toString())));
+        else
+          myIncomeCategories.add(Category(Data[i]["label"], amount: double.parse(Data[i]["amount"].toString())));
       }
-      kCategories = myCategories;
+      kCategories = myExpenseCategories;
+      kIncomeCategories = myIncomeCategories;
     });
   }
   @override
@@ -73,6 +78,7 @@ class _CategoriesRowState extends State<CategoriesRow> {
 }
 
 class ExpenseCategory extends StatelessWidget {
+
   const ExpenseCategory({
     Key key,
     @required this.index,
@@ -81,10 +87,11 @@ class ExpenseCategory extends StatelessWidget {
 
   final int index;
   final String text;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.fromLTRB(0.0, 0,0,10),
       child: Row(
         children: <Widget>[
           Container(
