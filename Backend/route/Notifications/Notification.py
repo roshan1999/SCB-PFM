@@ -10,6 +10,7 @@ from sqlalchemy import func
 @token_required
 def get_reminders_notification(current_user):
   user_rem = User.query.filter_by(public_id=current_user.public_id).first()
-  date3=datetime.datetime.today() + datetime.timedelta(days=3)
-  result = user_rem.reminders.filter(func.Date(Reminder.due_date)<=date3).order_by(func.DATE(Reminder.due_date))
+  today = datetime.datetime.today()
+  date3= today + datetime.timedelta(days=3)
+  result = user_rem.reminders.filter(func.Date(Reminder.due_date)<=date3 , func.Date(Reminder.due_date)>today).order_by(func.DATE(Reminder.due_date))
   return reminders_schema.jsonify(result)

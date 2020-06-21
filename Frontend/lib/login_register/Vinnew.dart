@@ -16,7 +16,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-String url;
+String url,name,mail;
 
 Widget header(String s) {
   return Container(
@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
   _loadUrl() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      prefs.setString('url', 'http://bcfb4d921ea1.ngrok.io');
+      prefs.setString('url', 'http://13a20d593970.ngrok.io');
     });
   }
 
@@ -235,8 +235,10 @@ class _LoginPageState extends State<LoginPage> {
                                         result = jsonDecode(response.body);
                                         print(result);
                                         if (response.statusCode == 200) {
-                                          await storeToken(result['token']);
+                                          await storeToken(result['token'] , result['name'] , result['mail']);
                                           debugPrint('Homepage');
+                                          debugPrint(name);
+                                          debugPrint(mail);
                                           Navigator.pushReplacement(
                                             context,
                                             new MaterialPageRoute(
@@ -330,8 +332,10 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-  Future storeToken(String token) async {
+  Future storeToken(String token , String name , String mail) async {
     final prefs = await SharedPreferences.getInstance();
+    prefs.setString('name', name);
+    prefs.setString('mail', mail);
     prefs.setString('token', token);
   }
 }

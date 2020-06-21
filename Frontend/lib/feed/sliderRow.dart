@@ -22,6 +22,7 @@ class SildeAbleRow extends StatelessWidget {
   final String label;
   int nextPage;
   String deleteId;
+  bool type;
 
   Future <http.Response> _deleteId(String route) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -43,6 +44,7 @@ class SildeAbleRow extends StatelessWidget {
     @required this.purpose,
     @required this.nextPage,
     this.label,
+    this.type,
   });
   @override
   Widget build(BuildContext context) {
@@ -151,6 +153,144 @@ class SildeAbleRow extends StatelessWidget {
 
 }
 
+class SildeAbleRowTransaction extends StatelessWidget {
+  final int id;
+  final int amount;
+  final String date;
+  final String purpose;
+  final String label;
+  int nextPage;
+  String deleteId;
+  bool type;
+
+  Future <http.Response> _deleteId(String route) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String url = pref.getString('url');
+    String token = pref.getString('token');
+    String uri = Uri.encodeFull(url + "/" + route + "/" + deleteId.toString());
+    print(uri);
+    var response = await http.delete(uri, headers: {
+      'Accept': '*/*',
+      'x-access-token': token
+    });
+    return response;
+  }
+
+  SildeAbleRowTransaction({
+    @required this.id,
+    @required this.amount,
+    @required this.date,
+    @required this.purpose,
+    @required this.nextPage,
+    this.label,
+    @required this.type,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return Slidable(
+      actionPane: SlidableDrawerActionPane(),
+      actionExtentRatio: 0.25,
+      child: Container(
+        color: Colors.white,
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: type==true ?Colors.red : Colors.green[400],
+            child: Text(type==true ? 'E' : 'I'),
+            foregroundColor: Colors.white,
+          ),
+          trailing: Text(
+            date,
+            style: GoogleFonts.lato(
+              fontSize: 18,
+            ),
+          ),
+          title: Text(
+            amount.toString(),
+            style: GoogleFonts.lato(
+              fontSize: 18,
+            ),
+          ),
+          subtitle: Text(
+            purpose,
+            style: GoogleFonts.lato(
+              fontSize: 15,
+            ),
+          ),
+        ),
+      ),
+      secondaryActions: <Widget>[
+        IconSlideAction(
+          caption: 'Edit',
+          color: Colors.black45,
+          icon: Icons.edit,
+          onTap: () {
+            if (nextPage == 2) {
+              print(date+amount.toString()+purpose);
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => MyReminderPage(
+                    id:id.toString(),
+                    dateText: date,
+                    amountText: amount,
+                    descriptionText: purpose,
+                    enabled:"true",
+                  )));
+            }
+            else if (nextPage == 0) {
+                    print(label);
+                  Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => MyTransPage(
+                    id:id.toString(),
+                    dateText: date,
+                    amountText: amount,
+                    descriptionText: purpose,
+                    labelText: label,
+                    enabled:"true",
+                  )));
+            }
+          },
+        ),
+        IconSlideAction(
+          caption: 'Delete',
+          color: Colors.red,
+          icon: Icons.delete,
+          onTap: () async {
+            if (nextPage == 0) {
+              Tab.index = 0;
+              deleteId = id.toString();
+              print(deleteId);
+              var response = await _deleteId("transaction");
+              print(response.body);
+              if (response.statusCode == 200) {
+                Fluttertoast.showToast(msg: "Success");
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) => Tab.MyTabs()));
+              }
+              else {
+                Fluttertoast.showToast(msg: "Failed");
+              }
+            }
+            if (nextPage == 2) {
+              Tab.index = 2;
+              deleteId = id.toString();
+              print(deleteId);
+              var response = await _deleteId("reminder");
+              print(response.body);
+              if (response.statusCode == 200) {
+                Fluttertoast.showToast(msg: "Success");
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) => Tab.MyTabs()));
+              }
+              else {
+                Fluttertoast.showToast(msg: "Failed");
+              }
+            }
+          },
+        ),
+      ],
+    );
+  }
+
+}
 
 // ignore: must_be_immutable
 class SildeAbleRowGoal extends StatelessWidget {
