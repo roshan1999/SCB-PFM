@@ -65,6 +65,7 @@ def get_transactions(current_user):
       dc["date"] = date
       dc["description"] =transact.description
       dc["label"] =category.label
+      dc["type"] = category.cat_type
       lst.append(dc)
   return jsonify(lst)
 

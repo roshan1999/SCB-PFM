@@ -13,6 +13,8 @@ import './feed/tabbar.dart' as tab;
 import './notification_alerts/notifications.dart' as not;
 
 import 'home/HomePage.dart';
+import 'about/about.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ActiveSideBar extends StatelessWidget {
   @override
@@ -25,13 +27,35 @@ class ActiveSideBar extends StatelessWidget {
         "/Transaction": (BuildContext context) => Tra.Transaction(),
         "/tab": (BuildContext context) => tab.MyTabs(),
         "/notification": (BuildContext context) => not.Notification(),
-        "/Home" : (BuildContext context) => HomePage(),
+        "/Home": (BuildContext context) => HomePage(),
       },
     );
   }
 }
 
-class SideBar extends StatelessWidget {
+class SideBar extends StatefulWidget {
+  @override
+  _SideBarState createState() => _SideBarState();
+}
+
+class _SideBarState extends State<SideBar> {
+  String name = 'n', mail = 'user@xyz.com';
+  void retrieveUser() {
+    SharedPreferences.getInstance().then((value) {
+      setState(() {
+        name = value.getString('name');
+        mail = value.getString('mail');
+      });
+      print(name);
+    });
+  }
+
+  @override
+  void initState() {
+    retrieveUser();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,16 +67,16 @@ class SideBar extends StatelessWidget {
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountName: Text(
-                'admin',
+                name,
                 style: GoogleFonts.lato(fontSize: 18),
               ),
               accountEmail: Text(
-                'admin@sc.com',
+                mail,
                 style: GoogleFonts.lato(fontSize: 18),
               ),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.green[400],
-                child: Text('K'),
+                child: Text(name[0]),
               ),
             ),
             Container(
@@ -68,7 +92,8 @@ class SideBar extends StatelessWidget {
                   // Update the state of the app
                   // ...
                   // Then close the drawer
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomePage()));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => HomePage()));
                 },
               ),
             ),
@@ -195,10 +220,25 @@ class SideBar extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
                   Navigator.pop(context);
+                },
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(5),
+              child: ListTile(
+                leading: const Icon(Icons.info),
+                title: Text(
+                  'about',
+                  style: GoogleFonts.lato(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onTap: () {
+                 debugPrint('abc');
+                  Navigator.push(context,
+                      new MaterialPageRoute(builder: (context) => new About()));
                 },
               ),
             ),
