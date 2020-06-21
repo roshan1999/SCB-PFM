@@ -317,7 +317,7 @@ class _MyTransPageState extends State<MyTransPage> {
           ),
           onPressed: () {
             debugPrint("Discard Called");
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(0);
           },
           textColor: Colors.blueAccent,
           splashColor: Colors.indigoAccent,

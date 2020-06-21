@@ -1,3 +1,5 @@
+import 'package:final_project/home/Categories_Row.dart';
+import 'package:final_project/home/PieChart_View.dart';
 import 'package:final_project/login_register/Vinnew.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -13,9 +15,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-var isRefresh;
+import 'PieChart.dart';
 
-class HomePage extends StatefulWidget{
+class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -43,91 +45,100 @@ class _HomePageState extends State<HomePage> {
         data = json.decode(response.body);
         isLoading = false;
       });
-    }
-    catch(error){
+    } catch (error) {
       this.setState(() {
         errorMessage = error.toString();
         pref.setString('token', 'error');
       });
     }
   }
+
   var homeCalled;
-   String str;
+  String str;
   var isLoading;
-   @override
-   void initState(){
-     isLoading = true;
-       this.getData();
-     super.initState();
-   }
+  String balance = "0";
+
+  @override
+  void initState() {
+    isLoading = true;
+    this.getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    return errorMessage==null?
-    !isLoading?RefreshIndicator(
-    child: Scaffold(
-      appBar: AppBar(
-        title: Text('Home Page'),
-        elevation: 0,
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.power),
-          onPressed: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs?.clear();
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MyApp()),
-              );
-          },)
-        ],
-      ),
-      floatingActionButton: PlusButton(),
-      drawer: ActiveSideBar(),
-      body:
-      SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            DashBoard(),
-            SizedBox(
-              height: height * 0.35,
-              child: Container(
-                child: Card(
-                  color: Colors.white,
-                  shadowColor: Colors.green[50],
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: SimpleTimeSeriesChart(),
+    final width = MediaQuery.of(context).size.width;
+    return errorMessage == null
+        ? !isLoading
+            ? Scaffold(
+                appBar: AppBar(
+                  title: Text('Home Page'),
+                  elevation: 0,
+                  actions: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.power),
+                      onPressed: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs?.clear();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyApp()),
+                        );
+                      },
+                    )
+                  ],
                 ),
-              ),
-            ),
-            Card(
-              color: Colors.white,
-              child: MonthlyExpensesView()),
-          ],
-        ),
-      ),
-    ),
-      onRefresh: (){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomePage()));
-      return;
-      }
-    ):Scaffold(body:Center(child: CircularProgressIndicator()))
-
-        : Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
+                floatingActionButton: PlusButton(context),
+                drawer: ActiveSideBar(),
+                body: SafeArea(
+                  child: SizedBox.expand(
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned(
+                          top: -10,
+                          child: SizedBox(
+                              height: height * 0.5, child: DashBoard()),
+                        ),
+                        Positioned(
+                          top: 70,
+                          left: 0,
+                          height: height * 0.4,
+                          width: width,
+                          child: Container(
+                            child: Card(
+                              color: Colors.white,
+                              shadowColor: Colors.green[50],
+                              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                              child: SimpleTimeSeriesChart(),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                            bottom: 80,
+                            left: 12,
+                            width: width,
+                            height: height * 0.27,
+                            child: Row(
+                              children: <Widget>[
+//                        Placeholder(),
+                                CategoriesRow(),
+                                PieChartView(),
+                              ],
+                            )),
+                        SizedBox.expand(child: showLargeMenu()),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            : Scaffold(body: Center(child: CircularProgressIndicator()))
+        : Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => MyApp()));
   }
 
-}
-
-class PlusButton extends StatelessWidget {
-  const PlusButton({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget PlusButton(BuildContext context) {
     return SpeedDial(
       animatedIcon: AnimatedIcons.add_event,
       overlayColor: Colors.blueGrey,
@@ -140,9 +151,11 @@ class PlusButton extends StatelessWidget {
           backgroundColor: Colors.greenAccent,
           onTap: () {
             Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => MyTransPage())).then((status)
-            {
-              isRefresh = status;
+                    new MaterialPageRoute(builder: (context) => MyTransPage()))
+                .then((status) {
+              if (status != 0)
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => HomePage()));
             });
           },
         ),
@@ -164,6 +177,122 @@ class PlusButton extends StatelessWidget {
                 new MaterialPageRoute(builder: (context) => MyReminderPage()));
           },
         )
+      ],
+    );
+  }
+
+  showLargeMenu() {
+    return DraggableScrollableSheet(
+        initialChildSize: 0.08,
+        minChildSize: 0.08,
+        maxChildSize: 1,
+        builder: (BuildContext context, sc) {
+          return Container(
+            color: Colors.indigo,
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            height: 56.0,
+            child: ListView(
+              controller: sc,
+              children: <Widget>[
+                Row(children: <Widget>[
+                  IconButton(
+                    onPressed: showLargeMenu,
+                    icon: Icon(Icons.menu),
+                    color: Colors.white,
+                  ),
+                  Spacer(),
+                  Text("Balance : " + balance,
+                      style: GoogleFonts.lato(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 16)),
+                  Spacer(),
+                  IconButton(
+                    onPressed: showLargeMenu,
+                    icon: Icon(Icons.menu),
+                    color: Colors.white,
+                  ),
+                ]),
+                ExpansionTile(
+                  title: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.attach_money,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 8),
+                      Text("Income",
+                          style: GoogleFonts.lato(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
+                    ],
+                  ),
+                  children: <Widget>[
+                    for (var category in kIncomeCategories)
+                      if(category.amount!=0)
+                        CategoryList(text: category.name, index: kIncomeCategories.indexOf(category)),
+                  ],
+                ),
+                ExpansionTile(
+                  title: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.attach_money,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 8),
+                      Text("Expense",
+                          style: GoogleFonts.lato(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
+                    ],
+                  ),
+                  children: <Widget>[
+                    for (var category in kCategories)
+                      if(category.amount!=0)
+                        CategoryList(text: category.name, index: kCategories.indexOf(category)),
+                  ],
+                )
+              ],
+            ),
+          );
+        });
+  }
+}
+
+class CategoryList extends StatelessWidget {
+  const CategoryList({
+    Key key,
+    @required this.index,
+    @required this.text,
+  }) : super(key: key);
+
+  final int index;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      title: Text(text,
+          style: GoogleFonts.lato(
+              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+      leading: Padding(
+        padding: EdgeInsets.fromLTRB(52, 0, 0, 0),
+        child: Icon(Icons.category, color:  kNeumorphicColors.elementAt(index % kNeumorphicColors.length)),
+      ),
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(54, 0, 0, 0),
+          child: ListTile(
+            title: Text("Bill1",
+                style: GoogleFonts.lato(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.lightGreenAccent)),
+          ),
+        ),
       ],
     );
   }

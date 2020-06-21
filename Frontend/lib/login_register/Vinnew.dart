@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
   _loadUrl() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      prefs.setString('url', 'http://bcfb4d921ea1.ngrok.io');
+      prefs.setString('url', 'http://1ca65576886a.ngrok.io');
     });
   }
 

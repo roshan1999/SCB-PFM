@@ -7,7 +7,7 @@ import 'dart:async';
 import 'dart:convert';
 import '../sidebar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../home/HomePage.dart';
+import '../login_register/PlusButton.dart';
 import 'sliderRow.dart';
 class Goal extends StatefulWidget{
   @override

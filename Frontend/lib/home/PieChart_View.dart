@@ -73,34 +73,15 @@ class _PieChartViewState extends State<PieChartView> {
       child: !isLoading?
       LayoutBuilder(
         builder: (context, constraint) => Container(
-//              decoration: BoxDecoration(
-////                color:Colors.blueGrey,
-//                color: Color.fromRGBO(193, 214, 233, 1),
-//                shape: BoxShape.circle,
-//                boxShadow: [
-//                  BoxShadow(
-//                    spreadRadius: -10,
-//                    blurRadius: 17,
-//                    offset: Offset(-5, -5),
-//                    color: Colors.white,
-//                  ),
-//                  BoxShadow(
-//                    spreadRadius: -2,
-//                    blurRadius: 10,
-//                    offset: Offset(7, 7),
-//                    color: Color.fromRGBO(146, 182, 216, 1),
-//                  )
-//                ],
-//              ),
           child: Stack(
             children: [
               Center(
                 child: SizedBox(
-                  width: constraint.maxWidth * 0.7,
+                  width: constraint.maxWidth * 0.65,
                   child: CustomPaint(
                     child: Center(),
                     foregroundPainter: PieChart(
-                      width: constraint.maxWidth * 0.5,
+                      width: constraint.maxWidth * 0.45,
                       categories: myCategories,
                     ),
                   ),
@@ -108,7 +89,7 @@ class _PieChartViewState extends State<PieChartView> {
               ),
               Center(
                 child: Container(
-                  height: constraint.maxWidth * 0.5,
+                  height: constraint.maxWidth * 0.45,
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(193, 200, 233, 1),
                     shape: BoxShape.circle,
@@ -135,7 +116,7 @@ class _PieChartViewState extends State<PieChartView> {
                           child: Text('Expense:',
                             style: GoogleFonts.lato(
                               fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                              fontSize: 12,
                               color: Color.fromRGBO(200, 0, 0, 0.5),
                             ),
                           ),
@@ -145,7 +126,7 @@ class _PieChartViewState extends State<PieChartView> {
                         child: Text('Rs. ' +expense,
                           style: GoogleFonts.lato(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 16,
                             color: Color.fromRGBO(200, 0, 0, 0.5),
                           ),
                         ),
@@ -156,7 +137,7 @@ class _PieChartViewState extends State<PieChartView> {
                           'Income:',
                           style: GoogleFonts.lato(
                             fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                            fontSize: 12,
                             color: Colors.blue
                           ),
                         ),
@@ -165,7 +146,7 @@ class _PieChartViewState extends State<PieChartView> {
                         child: Text('Rs. '+income,
                           style: GoogleFonts.lato(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 16,
                             color: Colors.blue,
                           ),
                         ),

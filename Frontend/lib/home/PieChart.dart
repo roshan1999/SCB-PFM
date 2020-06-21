@@ -59,10 +59,19 @@ class Category {
   Category(this.name, {@required this.amount});
   final String name;
   final double amount;
+
 }
 
 var isLoading = true;
 List<Category> kCategories = [
+  Category('groceries', amount: 500.00),
+  Category('online Shopping', amount: 150.00),
+  Category('eating', amount: 90.00),
+  Category('bills', amount: 90.00),
+  Category('subscriptions', amount: 40.00),
+  Category('fees', amount: 20.00),
+];
+List<Category> kIncomeCategories = [
   Category('groceries', amount: 500.00),
   Category('online Shopping', amount: 150.00),
   Category('eating', amount: 90.00),
