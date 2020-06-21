@@ -117,44 +117,65 @@ def divide_savings(current_user):
 @token_required
 def get_income_of_four_month(current_user):
     today = date.today()
-    lst = []
+    lst1 = []
+    lst2 = []
     this_date = today.replace(day=1)
     previous1_month = this_date
     previous2_month = this_date - dateutil.relativedelta.relativedelta(months=1)
     previous3_month = this_date - dateutil.relativedelta.relativedelta(months=2)
     previous4_month = this_date - dateutil.relativedelta.relativedelta(months=3)
-    month1_expense = Category.query.filter_by(public_id = current_user.public_id,cat_type = True, month = previous1_month)
-    month2_expense = Category.query.filter_by(public_id = current_user.public_id,cat_type = True, month = previous2_month)
-    month3_expense = Category.query.filter_by(public_id = current_user.public_id,cat_type = True, month = previous3_month)
-    month4_expense = Category.query.filter_by(public_id = current_user.public_id,cat_type = True, month = previous4_month)
+    month1_expense = Category.query.filter_by(public_id = current_user.public_id, month = previous1_month)
+    month2_expense = Category.query.filter_by(public_id = current_user.public_id, month = previous2_month)
+    month3_expense = Category.query.filter_by(public_id = current_user.public_id, month = previous3_month)
+    month4_expense = Category.query.filter_by(public_id = current_user.public_id, month = previous4_month)
     month1_total_expense = 0
+    month1_total_income = 0
     if month1_expense is None:
         month1_total_expense=0
     else:
         for i in month1_expense:
-            month1_total_expense += i.amount 
-    lst.append(month1_total_expense) 
+            if i.cat_type is True:
+                month1_total_expense += i.amount
+            else:
+                month1_total_income += i.amount 
+    lst1.append(month1_total_expense)
+    lst2.append(month1_total_income) 
     month2_total_expense = 0
+    month2_total_income = 0
     if month2_expense is None:
         month2_total_expense=0
     else:
         for i in month2_expense:
-            month2_total_expense += i.amount
-    lst.append(month2_total_expense)
+            if i.cat_type is True:
+                month2_total_expense += i.amount
+            else:
+                month2_total_income += i.amount 
+    lst1.append(month2_total_expense)
+    lst2.append(month2_total_income)
     month3_total_expense = 0
+    month3_total_income = 0
     if month3_expense is None:
         month3_total_expense=0
     else:
         for i in month3_expense:
-            month3_total_expense += i.amount 
-    lst.append(month3_total_expense)
+            if i.cat_type is True:
+                month3_total_expense += i.amount
+            else:
+                month3_total_income += i.amount 
+    lst1.append(month3_total_expense)
+    lst2.append(month3_total_income)
     month4_total_expense = 0
+    month4_total_income = 0
     if month4_expense is None:
         month4_total_expense=0
     else:
         for i in month4_expense:
-            month4_total_expense += i.amount
-    lst.append(month4_total_expense)
-    print(lst)
-    return jsonify({"amount" : lst})
+            if i.cat_type is True:
+                month4_total_expense += i.amount
+            else:
+                month4_total_income += i.amount 
+    lst1.append(month4_total_expense)
+    lst2.append(month4_total_income)
+    print(lst2)
+    return jsonify({"amount" : lst1 , "amount1" : lst2})
     
