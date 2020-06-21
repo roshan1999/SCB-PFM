@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './PieChart.dart';
 import 'package:http/http.dart' as http;
-var isLoading = true;
+
 class PieChartView extends StatefulWidget {
   const PieChartView({
     Key key,
@@ -56,6 +56,7 @@ class _PieChartViewState extends State<PieChartView> {
   }
   @override
   void initState(){
+    isLoading = true;
     this.getCategory();
     super.initState();
   }
@@ -63,6 +64,7 @@ class _PieChartViewState extends State<PieChartView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
   }
+  var isLoading;
   @override
   Widget build(BuildContext context) {
 
@@ -134,7 +136,7 @@ class _PieChartViewState extends State<PieChartView> {
                             style: GoogleFonts.lato(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
-                              color: Colors.blue,
+                              color: Color.fromRGBO(200, 0, 0, 0.5),
                             ),
                           ),
                         ),
@@ -144,7 +146,7 @@ class _PieChartViewState extends State<PieChartView> {
                           style: GoogleFonts.lato(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
-                            color: Colors.blue,
+                            color: Color.fromRGBO(200, 0, 0, 0.5),
                           ),
                         ),
                       ),
@@ -155,7 +157,7 @@ class _PieChartViewState extends State<PieChartView> {
                           style: GoogleFonts.lato(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
-                            color: Color.fromRGBO(200, 0, 0, 0.5)
+                            color: Colors.blue
                           ),
                         ),
                       ),
@@ -164,7 +166,7 @@ class _PieChartViewState extends State<PieChartView> {
                           style: GoogleFonts.lato(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
-                            color: Color.fromRGBO(200, 0, 0, 0.5),
+                            color: Colors.blue,
                           ),
                         ),
                       ),

@@ -76,21 +76,21 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/signup': (BuildContext context) => new SignupPage()
       },
-      home: new MyHomePage(),
+      home: new LoginPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _LoginPageState extends State<LoginPage> {
   checkStatus() {
     SharedPreferences.getInstance().then((prefs) {
       var status = prefs.getString('token');
-      if (status == null) {
+      if (status == null || status == "error") {
         print(prefs.getString('token'));
         return "Done";
       } else {
@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return 'Done2';
       }
     });
-    return HomePage();
+    return LoginPage();
   }
 
   @override
@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _loadUrl() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      prefs.setString('url', 'http://20c7bbfa737a.ngrok.io');
+      prefs.setString('url', 'http://bcfb4d921ea1.ngrok.io');
     });
   }
 

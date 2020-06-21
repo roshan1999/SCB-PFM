@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import './PieChart.dart';
-var isLoading = true;
+
 class CategoriesRow extends StatefulWidget {
   const CategoriesRow({
     Key key,
@@ -16,6 +16,7 @@ class CategoriesRow extends StatefulWidget {
 }
 
 class _CategoriesRowState extends State<CategoriesRow> {
+  var isLoading;
   List Data = [];
   List<Category> myCategories= [];
   Future getCategory() async {
@@ -46,6 +47,7 @@ class _CategoriesRowState extends State<CategoriesRow> {
   }
   @override
   void initState(){
+    isLoading = true;
     this.getCategory();
     super.initState();
   }
@@ -61,8 +63,8 @@ class _CategoriesRowState extends State<CategoriesRow> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           for (var category in kCategories)
-            ExpenseCategory(
-                text: category.name, index: kCategories.indexOf(category))
+            if(category.amount!=0)
+              ExpenseCategory(text: category.name, index: kCategories.indexOf(category)),
         ],
       ),
     ):

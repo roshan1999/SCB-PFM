@@ -13,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+var isRefresh;
 
 class HomePage extends StatefulWidget{
   @override
@@ -20,17 +21,51 @@ class HomePage extends StatefulWidget{
 }
 
 class _HomePageState extends State<HomePage> {
+  String token;
+  var response;
+  static String errorMessage;
+  List data = [];
+
+  Future<void> getData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    url = pref.getString('url');
+    token = pref.getString('token');
+    try {
+      response = await http.get(Uri.encodeFull(url + "/transaction"), headers: {
+        'Content-type': 'application/json',
+        'Accept': '*/*',
+        'x-access-token': token
+      });
+      this.setState(() {
+        debugPrint("abc");
+        print(Uri.encodeFull(url + "/transaction"));
+        print(response.body);
+        data = json.decode(response.body);
+        isLoading = false;
+      });
+    }
+    catch(error){
+      this.setState(() {
+        errorMessage = error.toString();
+        pref.setString('token', 'error');
+      });
+    }
+  }
   var homeCalled;
    String str;
-
+  var isLoading;
    @override
    void initState(){
+     isLoading = true;
+       this.getData();
      super.initState();
    }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    return RefreshIndicator(
+    return errorMessage==null?
+    !isLoading?RefreshIndicator(
     child: Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
@@ -40,11 +75,10 @@ class _HomePageState extends State<HomePage> {
           onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               prefs?.clear();
-              Navigator.pushAndRemoveUntil(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => MyApp()),
-                  ModalRoute.withName("/Home")
               );
           },)
         ],
@@ -65,10 +99,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                   shadowColor: Colors.green[50],
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: SimpleTimeSeriesChart(
-                    createSampleData(),
-                    animate: true,
-                  ),
+                    child: SimpleTimeSeriesChart(),
                 ),
               ),
             ),
@@ -81,9 +112,11 @@ class _HomePageState extends State<HomePage> {
     ),
       onRefresh: (){
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomePage()));
-      return ;
+      return;
       }
-    );
+    ):Scaffold(body:Center(child: CircularProgressIndicator()))
+
+        : Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
   }
 
 }
@@ -107,7 +140,10 @@ class PlusButton extends StatelessWidget {
           backgroundColor: Colors.greenAccent,
           onTap: () {
             Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => MyTransPage()));
+                new MaterialPageRoute(builder: (context) => MyTransPage())).then((status)
+            {
+              isRefresh = status;
+            });
           },
         ),
         SpeedDialChild(
