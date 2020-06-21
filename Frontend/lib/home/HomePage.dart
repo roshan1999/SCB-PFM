@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                         Positioned(
                           top: 70,
                           left: 0,
-                          height: height * 0.4,
+                          height: height * 0.35,
                           width: width,
                           child: Container(
                             child: Card(
