@@ -16,7 +16,7 @@ import 'home/HomePage.dart';
 import 'about/about.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'login_register/Vinnew.dart';
+import 'login_register/login.dart';
 
 class ActiveSideBar extends StatelessWidget {
   @override

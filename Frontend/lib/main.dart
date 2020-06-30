@@ -7,14 +7,14 @@ import './feed/tabbar.dart' as tab;
 import './notification_alerts/notifications.dart' as not;
 import 'home/HomePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'login_register/Vinnew.dart';
+import 'login_register/login.dart';
 
 
 
 class FinanceApp extends StatelessWidget {
   Future<String> get jwtOrEmpty async {
     var prefs = await SharedPreferences.getInstance();
-    prefs.setString('url', 'http://9522637d4f44.ngrok.io');
+    prefs.setString('url', 'http://68df501b49f6.ngrok.io');
     var jwt = prefs.getString("token");
     if(jwt == null) return "";
     return jwt;

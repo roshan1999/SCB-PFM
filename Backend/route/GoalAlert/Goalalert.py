@@ -89,7 +89,6 @@ def divide_savings(current_user):
           goal_saving_needed_this_month.append((u.amount_total-u.amount_saved)/months_remaining)
 
 
-    print(goal_saving_needed_this_month)
     balance = total_income - total_expense
     if(balance<0):
         return jsonify({"message":"Not enough balance to divide any amount"})
@@ -98,15 +97,18 @@ def divide_savings(current_user):
     if(total_month_goal_amount==0):
         return jsonify({"message":"You have achieved all your goals"})
 
+    final_goal = list()
     for goal in goal_saving_needed_this_month:
         goal = (goal/total_month_goal_amount)*balance
-
+        final_goal.append(goal)
+    print(final_goal)
     ## Add this in respective goals using Update method
     i = 0
+    print("Balance = "+str(balance));
     for goal in result:
         print(goal.amount_saved)
         print(goal_saving_needed_this_month[i])
-        goal.amount_saved += goal_saving_needed_this_month[i]
+        goal.amount_saved += final_goal[i]
         print(goal.description)
         print(goal.amount_saved)
         i = i + 1
